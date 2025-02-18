@@ -1,0 +1,49 @@
+.MessageCard{
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 0 0 0;
+}
+
+.MessageCard .header{
+    flex: 1;
+    padding: 0rem 1rem;
+    display: flex;
+    align-items: center;
+    & h3{
+        color: rgba(0, 0, 0, 0.793) !important;
+    }
+}
+
+.MessageCard .body{
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-left: 3rem;
+
+    & p{
+        width: 80%;
+        overflow-x: auto;
+    }
+}
+
+.MessageCard .AccountSymbl{
+    height: 60px !important;
+    width: 60px !important;
+    background-color: black;
+    color: white;
+}
+
+.MessageCard .btnContainer{
+    width: 50%;
+    padding: 0 1rem;
+    margin-left: auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.MessageCard .btnContainer .btn{
+    margin-left: 1rem; 
+}
