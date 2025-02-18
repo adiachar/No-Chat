@@ -1,0 +1,46 @@
+.ChatInput{
+    width: 80%;
+    margin: 0rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ChatInput p{
+    font-size: 25px;
+    font-weight: 600;
+    color: white;
+    margin: 0 auto 1rem 0;
+}
+
+.ChatInput textarea{
+    max-width: 100%;
+    min-width: 80%;
+    outline: 0px;
+    border: 5px solid rgba(32, 32, 32, 0.851);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    font-size: 130%;
+    font-weight: 700;
+}
+
+.ChatInput button{
+    display: block;
+    margin: 1rem auto;
+    border: 0px;
+    border-radius: 5px;
+    width: 40%;
+    height: 2.5rem;
+    background-color: rgb(31, 31, 31);
+    color: white;
+    font-size: 1rem;
+    
+    &:active{
+        cursor:wait;
+        background-color: rgb(48, 48, 48);
+    }
+}
+
+
+
