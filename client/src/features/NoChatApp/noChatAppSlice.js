@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import io from "socket.io-client";
 
-const socket = io.connect("http://192.168.180.22:5000");
+const socket = io.connect("http://192.168.15.176:5000");
 
 const initialState = {
     outgoingMsg: "",

@@ -9,7 +9,7 @@ export default function MakeConnections(){
     let AllConnections = useSelector((state) => state.connections);
 
     useEffect(() => {
-        axios.get(`http://192.168.180.22:5000/data/allUsers`)
+        axios.get(`http://192.168.15.176:5000/data/allUsers`)
         .then((res) => {
             let AllUsers = res.data;
             let oUsers = [];
@@ -31,7 +31,7 @@ export default function MakeConnections(){
     }, []);
 
     function requestConnection(_id){
-        axios.post(`http://192.168.180.22:5000/connection`, {from: user._id, to: _id})
+        axios.post(`http://192.168.15.176:5000/connection`, {from: user._id, to: _id})
         .then((res) => {
             if(res.data == "success"){
                 console.log("request made");

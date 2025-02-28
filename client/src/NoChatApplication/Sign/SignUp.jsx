@@ -26,7 +26,7 @@ export default function SignUp(){
         onSubmit: (values) =>{
             if(formik.values.confirmPassword === formik.values.password){
                 setError("");
-                axios.post("http://192.168.180.22:5000/user/signUp", {values})
+                axios.post("http://192.168.15.176:5000/user/signUp", {values}, {withCredentials: true})
                 .then((res) =>{
                     if(res.data.user){
                         let user = res.data.user;
@@ -34,6 +34,10 @@ export default function SignUp(){
                         navigate("/");
                     }else{
                         console.log("Did not get user data from server");
+                    }
+                }).catch((err) => {
+                    if(err.response.data.message){
+                        setError(err.response.data.message);
                     }
                 });
             }else{
@@ -71,7 +75,7 @@ export default function SignUp(){
                     <label htmlFor="confirmPassword">Confirm Password: </label>
                     <input type="text" id="confirmPassword" name="confirmPassword" placeholder="Congirm Password" value={formik.values.confirmPassword} onChange={handlechange}/>
                 </div>
-                <p>{error}</p>
+                {error ? <p>{error}</p> : null}
                 <button type="submit">SignUp</button>
             </form>
         </div>

@@ -13,7 +13,7 @@ import MyConnections from "./Connections/MyConnections.jsx";
 import MakeConnections from "./Connections/MakeConnections.jsx";
 import ConnectionRequests from "./Connections/ConnectionRequests.jsx";
 import axios from "axios";
-const socket = io("http://192.168.180.22:5000");
+const socket = io("http://192.168.15.176:5000");
 
 export default function NoChatApp(){
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ export default function NoChatApp(){
 
     useEffect(() => {
         async function validateSession(){
-            axios.get("http://192.168.180.22:5000/user/validateSession", {withCredentials: true})
+            axios.get("http://192.168.15.176:5000/user/validateSession", {withCredentials: true})
             .then((res) => {
                 if(res.data.valid){
                     let user = res.data.user;
@@ -41,7 +41,7 @@ export default function NoChatApp(){
         if(!user._id){
             validateSession();
         }
-    },[]);
+    },[user]);
 
     socket.on("response", (incommingMsg) => {
         if(incommingMsg.to == user._id){

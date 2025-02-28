@@ -1,5 +1,6 @@
 const User = require("../model/user.js");
 const {onlineUsers} = require("../onlineUsers.js");
+
 module.exports.getConnections = async (req, res) => {
     if(req.session.user){
         let _id = req.session.user._id;
