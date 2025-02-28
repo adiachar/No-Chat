@@ -12,7 +12,7 @@ export default function ConnectionRequests(){
     useEffect(() => {
         if(connectionRequests){
             console.log("making connection request");
-            axios.get(`http://192.168.180.22:5000/data/connectionRequests`, {withCredentials: true})
+            axios.get(`http://192.168.15.176:5000/data/connectionRequests`, {withCredentials: true})
             .then((res) => {
                 console.log(res.data);
                 let connectionRequests = res.data;
@@ -22,7 +22,7 @@ export default function ConnectionRequests(){
     },[]);
 
     function acceptRequest(_id){
-        axios.post(`http://192.168.180.22:5000/connection/accept`, {from: user._id, to: _id})
+        axios.post(`http://192.168.15.176:5000/connection/accept`, {from: user._id, to: _id})
         .then((res) => {
             if(res.data.connectionRequests && res.data.connections){
                 let connections = res.data.connections;
@@ -36,7 +36,7 @@ export default function ConnectionRequests(){
     }
 
     function rejectRequest(_id){
-        axios.post(`http://192.168.180.22:5000/connection/reject`, {from: user._id, to: _id})
+        axios.post(`http://192.168.15.176:5000/connection/reject`, {from: user._id, to: _id})
         .then((res) => {
             if(res.data.connectionRequests){
                 let connectionRequests = res.data.connectionRequests;

@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 
-const socket = io("http://192.168.180.22:5000");
+const socket = io("http://192.168.15.176:5000");
 
 
 export default function SignIn(){
@@ -25,7 +25,7 @@ export default function SignIn(){
         validate: () => { //No validation for now
             },
         onSubmit: (values) =>{
-            axios.post("http://192.168.180.22:5000/user/signIn", values, {withCredentials: true})
+            axios.post("http://192.168.15.176:5000/user/signIn", values, {withCredentials: true})
             .then((res) => {
                 if(res.data.user){
                     let user = res.data.user;

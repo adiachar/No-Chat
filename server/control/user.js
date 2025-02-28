@@ -4,20 +4,27 @@ let secretKey = "Super&secret%$";
 
 module.exports.userSignUp = async (req, res) =>{
     const userData = req.body.values;
-    let newUser = {
-        userName: userData.userName,
-        dob: userData.dob,
-        email: userData.email,
-        password: userData.password,
-    };
     try{
+        let existingUser = await User.findOne({email: userData.email});
+        if(existingUser != null){
+            console.log(existingUser);
+            return res.status(400).json({message: "Email is already in use. Please use a unique email."});
+        }
+        let newUser = {
+            userName: userData.userName,
+            dob: userData.dob,
+            email: userData.email,
+            password: userData.password,
+        };
         newUser = new User(newUser);
+        console.log(newUser);
         await newUser.save();
         let userObject = newUser.toObject();
         let user = {_id: userObject._id, userName: userObject.userName, email: userObject.email};
-        res.json({user});
+        res.status(201).json({user});
     }catch(err){
-        console.log("error in control/user.js:", err);
+        console.log(err);
+        res.status(500).json({message: "Internal server error"});
     };  
 }
 

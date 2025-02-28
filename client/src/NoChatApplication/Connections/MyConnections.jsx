@@ -7,14 +7,14 @@ import { setConnections } from "../../features/NoChatApp/noChatAppSlice.js";
 
 export default function MyConnections(){
     const connections = useSelector((state) => state.connections);
+    const connectionRequests = useSelector((state) => state.connectionRequests);
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
         console.log("getting all connections");
-            axios.get(`http://192.168.180.22:5000/data/connections`, {withCredentials: true})
+            axios.get(`http://192.168.15.176:5000/data/connections`, {withCredentials: true})
             .then((res) => {
-                console.log("got response: " +res.data.connections);
                 if(res.data.connections){
                     let connections = res.data.connections;
                     dispatch(setConnections(connections));
@@ -24,7 +24,7 @@ export default function MyConnections(){
             }).catch((err) => {
                 console.log(err);
             });
-        }, []);
+        }, [connectionRequests]);
 
     return(
         <div className="MyConnections">
