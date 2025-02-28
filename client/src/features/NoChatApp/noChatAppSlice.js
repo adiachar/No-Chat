@@ -6,7 +6,7 @@ const socket = io.connect("http://192.168.15.176:5000");
 const initialState = {
     outgoingMsg: "",
     allMessages: [],
-    user: {userName: "", email: ""},
+    user: {_id: "", userName: "", email: ""},
     to: "",
     connections: [],
     connectionRequests: [],
