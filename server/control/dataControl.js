@@ -1,4 +1,5 @@
 const User = require("../model/user.js");
+const Message = require("../model/message.js");
 const {onlineUsers} = require("../onlineUsers.js");
 
 module.exports.getConnections = async (req, res) => {
@@ -35,4 +36,18 @@ module.exports.getConnectionRequests = async (req, res) => {
     else{
         res.send([]);
     }
+}
+
+module.exports.storeMessage = async (req, res) => {
+    let {from, to, message} = req.body;
+    const con_id = [from, to].sort().join("_");
+    const newMessage = new Message({con_id: con_id, from: from, to: to, message: message});
+    try{
+        newMessage.save();
+        res.status(201).send({success: true});
+    }
+    catch(err){
+        res.status(404).send({success: false});
+    };
+    
 }
