@@ -13,6 +13,9 @@ module.exports.connectionRequest = async (req, res) => {
 
 module.exports.acceptConnection = async (req, res) => {
     let {from, to} = req.body;
+    if(!from || !to){
+        res.status(404).send("from or to id is missing in request");
+    }
     try{
         //updating the user connection and connectionRequests
         await User.findByIdAndUpdate(from, {$push: {connections: to}});
@@ -23,7 +26,7 @@ module.exports.acceptConnection = async (req, res) => {
         const sortedIds = [from, to].sort().join("_");
         const conversation = new Conversation({con_id: sortedIds, participants: [from, to], lastMessage: "Say hii to your new Friend"});
         await conversation.save();
-
+        console.log(conversation);
         //sending updated connection data back.
         let data = await User.findById(from, "connections").populate({path: connections, select: "userName email"});
         const connections = data.connections;

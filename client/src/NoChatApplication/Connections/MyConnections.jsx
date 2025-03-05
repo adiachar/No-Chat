@@ -10,10 +10,11 @@ export default function MyConnections(){
     const connectionRequests = useSelector((state) => state.connectionRequests);
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
-
+    const ip = useSelector((state) => state.ip);
+    
     useEffect(() => {
         console.log("getting all connections");
-            axios.get(`http://192.168.15.176:5000/data/connections`, {withCredentials: true})
+            axios.get(`http://${ip}:5000/data/connections`, {withCredentials: true})
             .then((res) => {
                 if(res.data.connections){
                     let connections = res.data.connections;
@@ -24,7 +25,7 @@ export default function MyConnections(){
             }).catch((err) => {
                 console.log(err);
             });
-        }, [connectionRequests]);
+    }, [connectionRequests]);
 
     return(
         <div className="MyConnections">
