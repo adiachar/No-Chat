@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {getConnections, getUsers, getConnectionRequests, storeMessage} = require("../control/dataControl");
+const {getConnections, getUsers, getConnectionRequests, storeMessage, getMessages} = require("../control/dataControl");
 
 router.route("/connections")
 .get((req, res) => {
@@ -20,6 +20,11 @@ router.route("/connectionRequests")
 router.route("/storeMessage")
 .post((req, res) => {
     storeMessage(req, res);
+});
+
+router.route("/conversation/:connectionId")
+.get((req, res) => {
+    getMessages(req, res);
 });
 
 module.exports = router;

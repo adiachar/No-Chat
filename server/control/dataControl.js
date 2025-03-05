@@ -43,11 +43,24 @@ module.exports.storeMessage = async (req, res) => {
     const con_id = [from, to].sort().join("_");
     const newMessage = new Message({con_id: con_id, from: from, to: to, message: message});
     try{
-        newMessage.save();
+        await newMessage.save();
         res.status(201).send({success: true});
     }
     catch(err){
         res.status(404).send({success: false});
     };
     
+}
+
+module.exports.getMessages = async (req, res) => {
+    if(req.session.user){
+        const {connectionId} = req.params;
+        let con_id = [req.session.user._id, connectionId].sort().join("_");
+        try{
+            let messages = await Message.find({con_id: con_id});
+            res.status(201).json(messages);
+        }catch(err){
+            res.status(404).send("");
+        }
+    }
 }

@@ -3,13 +3,17 @@ import axios from "axios";
 import { useState } from "react";
 import { setUser } from "../../features/NoChatApp/noChatAppSlice";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import io from "socket.io-client";
 import "./SignUp.css";
+
+const socket = io(`http://192.168.37.22:5000`);
+
 
 export default function SignUp(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const ip = useSelector(state => state.ip);
     const [error, setError] = useState("");
     const initialValues = {
         userName: "",
@@ -26,10 +30,11 @@ export default function SignUp(){
         onSubmit: (values) =>{
             if(formik.values.confirmPassword === formik.values.password){
                 setError("");
-                axios.post("http://192.168.15.176:5000/user/signUp", {values}, {withCredentials: true})
+                axios.post(`http://${ip}:5000/user/signUp`, {values}, {withCredentials: true})
                 .then((res) =>{
                     if(res.data.user){
                         let user = res.data.user;
+                        socket.emit("register", {_id: user._id});
                         dispatch(setUser(user));
                         navigate("/");
                     }else{

@@ -8,9 +8,8 @@ export default function ChatMessage({connection}){
     const headingRef = useRef(null);
     const containerRef = useRef(null);
     const [fontSize, setFontSize] = useState(40);
-
+    
     useEffect(() => {
-
         const adjustFontSize = () => {
             if(!headingRef.current || !containerRef.current)
                 return;
@@ -25,7 +24,7 @@ export default function ChatMessage({connection}){
         };
         adjustFontSize();
         window.addEventListener("resize", adjustFontSize);
-    }, []);
+    }, [connection]);
     
     return(
         <div className={`ChatMessage`} ref={containerRef}>
