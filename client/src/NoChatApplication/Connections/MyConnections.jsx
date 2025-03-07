@@ -24,7 +24,7 @@ export default function MyConnections(){
             }).catch((err) => {
                 console.log(err);
             });
-    }, [connectionRequests]);
+    }, []);
 
     return(
         <div className="MyConnections">

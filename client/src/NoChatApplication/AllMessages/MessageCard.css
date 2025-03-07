@@ -2,29 +2,29 @@
     width: 100%;
     background-color: rgb(255, 255, 255);
     display: flex;
-    flex-direction: column;
-    padding: 1.5rem 0 0 0;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.075);
 }
 
-.MessageCard .header{
+.MessageCard .body{
     flex: 1;
-    padding: 0rem 1rem;
+    padding: 0.5rem 0.3rem;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
     & h3{
         color: rgba(0, 0, 0, 0.793) !important;
     }
 }
 
-.MessageCard .body{
+.MessageCard .message{
     flex: 1;
     display: flex;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: center;
-    margin-left: 3rem;
-
     & p{
-        width: 80%;
+        margin-top: 0.5rem;
         overflow-x: auto;
     }
 }

@@ -1,5 +1,6 @@
 const User = require("../model/user.js");
 const Message = require("../model/message.js");
+const Conversation = require("../model/conversation.js");
 const {onlineUsers} = require("../onlineUsers.js");
 
 module.exports.getConnections = async (req, res) => {
@@ -9,8 +10,11 @@ module.exports.getConnections = async (req, res) => {
         if(data){
             let connections = data.connections;
             for(let connection of connections){
-                let id = connection._id.toString();
-                connection.isOnline = onlineUsers.has(id);
+                connection.isOnline = onlineUsers.has(connection._id.toString());
+                let con_id = [_id, connection._id].sort().join("_");
+                let conversation = await Conversation.find({con_id: con_id}, "lastMessage");
+                connection.msg = conversation[0] ? conversation[0].lastMessage : "---";
+                console.log(connection);
             }
             res.json({connections});
         }
@@ -43,6 +47,7 @@ module.exports.storeMessage = async (req, res) => {
     const con_id = [from, to].sort().join("_");
     const newMessage = new Message({con_id: con_id, from: from, to: to, message: message});
     try{
+        await Conversation.findOneAndUpdate({con_id: con_id}, {$set: {lastMessage: message}});
         await newMessage.save();
         res.status(201).send({success: true});
     }

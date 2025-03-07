@@ -16,8 +16,8 @@ export default function MessageCard({connection, btn1, btn2}){
 
     return(
         <div className="MessageCard" onClick={handleclick}>
-            <div className="header">
-                <AccountSymbl userName={connection ? connection.userName : "A"} isOnline={connection.isOnline}/>
+            <AccountSymbl userName={connection ? connection.userName : "A"} isOnline={connection.isOnline}/>
+            <div className="body">
                 <h3>{connection.userName ? connection.userName : "unknown"}:</h3>
                 {(btn1 && !btn2) && (
                     <div className="btnContainer">
@@ -43,13 +43,12 @@ export default function MessageCard({connection, btn1, btn2}){
                         onClick={() => {setIsClicked(true); btn2(connection._id)}}>Reject</Button>
                     </div>
                 )}
+                {(!btn1 && !btn2) ? (
+                <div className="message">
+                    {!btn1 && !btn2 ? <p>{connection.msg}</p> : null}
+                </div>
+                ): null}
             </div>
-
-            {(!btn1 && !btn2) ? (
-            <div className="body">
-                {!btn1 && !btn2 ? <p>{connection.msg}</p> : null}
-            </div>
-            ): null}
         </div>
     );
 }
