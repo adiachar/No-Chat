@@ -37,7 +37,7 @@ const noChatSlice = createSlice({
 
         setConnections: (state, action) => {
             for(let connection of action.payload){
-                state.connections[connection._id] = {...connection, msg: "..."};
+                state.connections[connection._id] = connection;
             }
         },
 
