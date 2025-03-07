@@ -38,7 +38,7 @@ export default function ChatInput({connectionId, updateChat}){
     return(
         <div className="ChatInput">
             <p>You:</p>
-            <textarea type="text" value={input} rows = "1" onChange={handleChange}/>
+            <textarea type="text" placeholder="..." value={input} rows = "1" onChange={handleChange}/>
             <button onClick={() => leaveMessage()}>Leave & clear</button>
         </div>
     );

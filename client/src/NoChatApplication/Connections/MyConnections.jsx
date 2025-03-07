@@ -13,7 +13,6 @@ export default function MyConnections(){
     const ip = useSelector((state) => state.ip);
     
     useEffect(() => {
-        console.log("getting all connections");
             axios.get(`http://${ip}:5000/data/connections`, {withCredentials: true})
             .then((res) => {
                 if(res.data.connections){
@@ -29,9 +28,9 @@ export default function MyConnections(){
 
     return(
         <div className="MyConnections">
-         {connections.length > 0 ? connections.map((connection, idx) => (
-                <MessageCard connection = {connection} key={idx}/>
-            )) : <h1 className="noConnections">No Connections! Try making new connections</h1> }
+            {connections ? Object.entries(connections).map(([key, value]) => (
+                <MessageCard connection = {value} key={key}/>
+            )): <h1 className="noConnections">No Connections! Try making new connections</h1>}
         </div>
     );
 }

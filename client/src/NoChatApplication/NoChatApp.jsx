@@ -14,7 +14,7 @@ import MakeConnections from "./Connections/MakeConnections.jsx";
 import ConnectionRequests from "./Connections/ConnectionRequests.jsx";
 import axios from "axios";
 
-const socket = io(`http://192.168.37.22:5000`);
+const socket = io(`http://192.168.96.22:5000`);
 
 export default function NoChatApp(){
     const navigate = useNavigate();
