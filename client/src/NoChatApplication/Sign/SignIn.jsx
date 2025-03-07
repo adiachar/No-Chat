@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import io from "socket.io-client";
 
-const socket = io(`http://192.168.37.22:5000`);
+const socket = io(`http://192.168.96.22:5000`);
 
 
 export default function SignIn(){

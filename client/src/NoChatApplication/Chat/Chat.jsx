@@ -15,8 +15,6 @@ export default function Chat(){
     const connectionId = location.state;
     const [msgHeight, setMsgHeight] = useState("100vh");
     const [chatHeight, setChatHeight] = useState("0vh");
-    let AllConnections = useSelector((state) => state.connections);
-    let [connection, setConnection] = useState({});
     let [messages, setMessages] = useState([]);
     let user = useSelector(state => state.user);
     let ip = useSelector(state => state.ip);
@@ -24,16 +22,6 @@ export default function Chat(){
     useEffect(() => {
         getChat();
     }, []);
-    
-    useEffect(() => {
-        for(let connection of AllConnections){
-            if(connection._id === connectionId){
-                setConnection(connection);
-                break;
-            }
-        }
-    },[AllConnections]);
-
 
     function showChat(){
         if(msgHeight == "100vh"){
@@ -96,7 +84,7 @@ export default function Chat(){
                 })}
             </div>
             <div className={ch.message} style={{height: msgHeight, overflow: "hidden"}}>
-                <ChatMessage connection={connection}/>
+                <ChatMessage connectionId={connectionId}/>
                 <ChatInput connectionId={connectionId} updateChat={getChat}/>
             </div>
         </div>

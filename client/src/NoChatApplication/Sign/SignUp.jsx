@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
 import "./SignUp.css";
 
-const socket = io(`http://192.168.37.22:5000`);
+const socket = io(`http://192.168.96.22:5000`);
 
 
 export default function SignUp(){

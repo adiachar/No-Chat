@@ -4,10 +4,11 @@ import "./ChatMessage.css";
 import AccountSymbl from "../Header/AccountSymbl";
 import { useSelector } from "react-redux";
 
-export default function ChatMessage({connection}){
+export default function ChatMessage({connectionId}){
     const headingRef = useRef(null);
     const containerRef = useRef(null);
     const [fontSize, setFontSize] = useState(40);
+    const connections = useSelector(state => state.connections);
     
     useEffect(() => {
         const adjustFontSize = () => {
@@ -24,16 +25,16 @@ export default function ChatMessage({connection}){
         };
         adjustFontSize();
         window.addEventListener("resize", adjustFontSize);
-    }, [connection]);
+    }, [connections]);
     
     return(
         <div className={`ChatMessage`} ref={containerRef}>
             <div className="toUser">
-                <AccountSymbl userName={connection ? connection.userName : "A"} isOnline={connection.isOnline}/>
-                <p>{connection ? connection.userName : "unknown"}</p>
+                <AccountSymbl userName={connections[connectionId] ? connections[connectionId].userName : "A"} isOnline={connections[connectionId] ? connections[connectionId].isOnline : false}/>
+                <p>{connections[connectionId] ? connections[connectionId].userName : "unknown"}</p>
             </div>
             <div className="h1">
-                <h1 ref={headingRef}>{connection ? connection.msg : "..."}</h1>
+                <h1 ref={headingRef}>{connections[connectionId] ? connections[connectionId].msg : "..."}</h1>
             </div>
         </div>
     );

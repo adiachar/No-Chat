@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import MessageCard from "../AllMessages/MessageCard";
 
-let ip = "192.168.37.22";
+let ip = "192.168.96.22";
 let hStyle = {width: "100%", marginTop: "2rem", textAlign: "center", color: "rgba(0, 0, 0, 0.464)"};
 export default function MakeConnections(){
     const [allUsers, setAllUsers] = useState([]);
     const user = useSelector((state) => state.user);
-    let AllConnections = useSelector((state) => state.connections);
+    let connections = useSelector((state) => state.connections);
     const ip = useSelector(state => state.ip);
     useEffect(() => {
         axios.get(`http://${ip}:5000/data/allUsers`)
@@ -16,13 +16,7 @@ export default function MakeConnections(){
             let AllUsers = res.data;
             let oUsers = [];
             for(let oUser of AllUsers){
-                let isConnection = false;
-                for(let connec of AllConnections){
-                    if(oUser._id == connec._id){
-                        isConnection = true;
-                    }
-                }
-                if(!isConnection){
+                if(!connections[oUser._id]){
                     oUsers.push(oUser);
                 }
             }
