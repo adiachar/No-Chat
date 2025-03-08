@@ -13,17 +13,27 @@
     margin: 0 auto 1rem 0;
 }
 
-.ChatInput textarea{
-    max-width: 100%;
-    min-width: 80%;
-    outline: 0px;
-    border: 5px solid rgba(32, 32, 32, 0.851);
-    border-radius: 10px;
-    padding: 1.5rem;
-    text-align: center;
-    font-size: 130%;
-    font-weight: 700;
+.ChatInput .input{
+    display: flex;
 }
+
+/* Style the input box */
+.react-input-emoji--container {
+    border: 3px solid #171717 !important;
+    border-radius: 8px !important;
+    background-color: #f0f0f0 !important;
+    padding: 1rem 6rem 1rem 1rem!important;
+    width: 10% !important;
+    position: relative !important;
+    font-size: larger !important;
+}
+  
+  /* Style the emoji button */
+  .react-input-emoji--button {
+    width: 5rem !important;
+    position: absolute !important;
+    right: 10px;
+  }
 
 .ChatInput button{
     display: block;
@@ -41,6 +51,5 @@
         background-color: rgb(48, 48, 48);
     }
 }
-
 
 
