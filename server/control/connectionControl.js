@@ -26,7 +26,7 @@ module.exports.acceptConnection = async (req, res) => {
         const sortedIds = [from, to].sort().join("_");
         const conversation = new Conversation({con_id: sortedIds, participants: [from, to], lastMessage: "Say hii to your new Friend"});
         await conversation.save();
-        console.log(conversation);
+
         //sending updated connection data back.
         let data = await User.findById(from, "connections").populate({path: connections, select: "userName email"});
         const connections = data.connections;
@@ -39,7 +39,6 @@ module.exports.acceptConnection = async (req, res) => {
 
 module.exports.rejectConnection = async (req, res) => {
     let {from, to} = req.body;
-    console.log("reject");
     let result = await User.updateOne({ _id: from },{ $pull: { connectionRequests: to } });
     let data = await User.findById(from, "connectionRequests").populate({path: "connectionRequests", select: "userName email"});
     const connectionRequests = data.connectionRequests;

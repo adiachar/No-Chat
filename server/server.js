@@ -9,12 +9,18 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const http = require("http");
 const {onlineUsers} = require("./onlineUsers.js");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const main = async () => {
-    await mongoose.connect("mongodb://localhost:27017/noChat");
+    try{
+        await mongoose.connect(process.env.MONGODB_URI);       
+        console.log("connected to MongoDB Atlas!");
+    }catch(error){
+        console.error("error connecting to MongoDB:", error);
+    }
 }
-
-main().then(() => console.log("connected to db"));
+main();
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json()); 
@@ -28,7 +34,8 @@ app.use(cors({
         "http://192.168.97.22:5173",
         "http://192.168.5.22:5173",
         "http://192.168.37.22:5173",
-        "http://192.168.96.22:5173"],
+        "http://192.168.96.22:5173",
+        "http://192.168.53.22:5173"],
     methods: ["GET", "POST"],
     credentials: true,
 }));
@@ -56,7 +63,8 @@ const io = new Server(server, {
             "http://192.168.97.22:5173",
             "http://192.168.5.22:5173",
             "http://192.168.37.22:5173",
-            "http://192.168.96.22:5173"],       
+            "http://192.168.96.22:5173",
+            "http://192.168.53.22:5173"],       
         methods: ["GET", "POST"],
         credentials: true,
     },

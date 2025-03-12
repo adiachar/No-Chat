@@ -14,7 +14,6 @@ module.exports.getConnections = async (req, res) => {
                 let con_id = [_id, connection._id].sort().join("_");
                 let conversation = await Conversation.find({con_id: con_id}, "lastMessage");
                 connection.msg = conversation[0] ? conversation[0].lastMessage : "---";
-                console.log(connection);
             }
             res.json({connections});
         }
