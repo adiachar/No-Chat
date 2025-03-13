@@ -11,6 +11,7 @@ const http = require("http");
 const {onlineUsers} = require("./onlineUsers.js");
 const dotenv = require("dotenv");
 dotenv.config();
+const MongoStore = require("connect-mongo");
 
 const main = async () => {
     try{
@@ -34,10 +35,18 @@ app.use(cors({
 }));
 
 app.use(session({
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI,
+        ttl: 24 * 60 * 60,
+    }),
     secret: "superSecret%$",
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true, maxAge: 3600000, sameSite: "none" },
+    saveUninitialized: false,
+    cookie: { 
+        secure: true,
+        httpOnly: true, 
+        maxAge: 1000 * 60 * 60, 
+        sameSite: "none" },
 }));
 
 app.use("/user", userRouter);
