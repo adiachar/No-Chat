@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import MessageCard from "../AllMessages/MessageCard";
 
-let ip = "192.168.53.22";
+let ip = "192.168.81.22";
 let hStyle = {width: "100%", marginTop: "2rem", textAlign: "center", color: "rgba(0, 0, 0, 0.464)"};
 export default function MakeConnections(){
     const [allUsers, setAllUsers] = useState([]);

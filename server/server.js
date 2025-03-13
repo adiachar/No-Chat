@@ -27,15 +27,7 @@ app.use(express.json());
 app.use(cors({
     origin: [
         "http://localhost:5173", 
-        "http://192.168.180.22:5173", 
-        "http://192.168.56.1:5173", 
-        "http://192.168.76.22:5173",
-        "http://192.168.15.176:5173",
-        "http://192.168.97.22:5173",
-        "http://192.168.5.22:5173",
-        "http://192.168.37.22:5173",
-        "http://192.168.96.22:5173",
-        "http://192.168.53.22:5173"],
+        "http://192.168.81.22:5173"],
     methods: ["GET", "POST"],
     credentials: true,
 }));
@@ -44,7 +36,7 @@ app.use(session({
     secret: "superSecret%$",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, maxAge: 3600000 },
+    cookie: { secure: true, maxAge: 3600000, sameSite: "none" },
 }));
 
 app.use("/user", userRouter);
@@ -56,15 +48,7 @@ const io = new Server(server, {
     cors: {
         origin: [
             "http://localhost:5173", 
-            "http://192.168.180.22:5173", 
-            "http://192.168.56.1:5173", 
-            "http://192.168.76.22:5173",
-            "http://192.168.15.176:5173",
-            "http://192.168.97.22:5173",
-            "http://192.168.5.22:5173",
-            "http://192.168.37.22:5173",
-            "http://192.168.96.22:5173",
-            "http://192.168.53.22:5173"],       
+            "http://192.168.81.22:5173"],       
         methods: ["GET", "POST"],
         credentials: true,
     },
