@@ -27,7 +27,8 @@ app.use(express.json());
 app.use(cors({
     origin: [
         "http://localhost:5173", 
-        "http://192.168.81.22:5173"],
+        "http://192.168.81.22:5173",
+        "https://nochatapp-yx0c.onrender.com"],
     methods: ["GET", "POST"],
     credentials: true,
 }));
@@ -48,7 +49,8 @@ const io = new Server(server, {
     cors: {
         origin: [
             "http://localhost:5173", 
-            "http://192.168.81.22:5173"],       
+            "http://192.168.81.22:5173",
+            "https://nochatapp-yx0c.onrender.com"],       
         methods: ["GET", "POST"],
         credentials: true,
     },
