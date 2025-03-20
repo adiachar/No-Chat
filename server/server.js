@@ -26,11 +26,7 @@ main();
 app.use(express.urlencoded({extended: true}));
 app.use(express.json()); 
 app.use(cors({
-    origin: [
-        "http://localhost:5173", 
-        "http://192.168.81.22:5173",
-        "https://nochat-065b.onrender.com"],
-    methods: ["GET", "POST"],
+    origin: "https://nochat-iev2.onrender.com",
     credentials: true,
 }));
 
@@ -41,7 +37,7 @@ app.use(session({
     }),
     secret: "superSecret%$",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: { 
         secure: true,
         httpOnly: true, 
@@ -56,11 +52,7 @@ app.use("/connection", connectionRouter);
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: [
-            "http://localhost:5173", 
-            "http://192.168.81.22:5173",
-            "https://nochat-065b.onrender.com"],       
-        methods: ["GET", "POST"],
+        origin: "https://nochat-iev2.onrender.com", 
         credentials: true,
     },
 });
