@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import axios from "axios";
+import axios from "../../utils/axios";
 import { setUser } from "../../features/NoChatApp/noChatAppSlice";
 import "./SignUp.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,6 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import io from "socket.io-client";
 
 const socket = io(`https://nochat.onrender.com`);
-
 
 export default function SignIn(){
     const dispatch = useDispatch();
@@ -24,7 +23,7 @@ export default function SignIn(){
         validate: () => { //No validation for now
             },
         onSubmit: (values) =>{
-            axios.post(`https://nochat.onrender.com/user/signIn`, values, {withCredentials: true})
+            axios.post(`/user/signIn`, values)
             .then((res) => {
                 if(res.data.user){
                     let user = res.data.user;
