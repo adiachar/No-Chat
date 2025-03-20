@@ -26,7 +26,7 @@ main();
 app.use(express.urlencoded({extended: true}));
 app.use(express.json()); 
 app.use(cors({
-    origin: "https://nochat-iev2.onrender.com",
+    origin: "https://nochat-iqi1.onrender.com",
     credentials: true,
 }));
 
@@ -52,7 +52,7 @@ app.use("/connection", connectionRouter);
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "https://nochat-iev2.onrender.com", 
+        origin: "https://nochat-iqi1.onrender.com", 
         credentials: true,
     },
 });
