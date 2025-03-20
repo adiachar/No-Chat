@@ -25,24 +25,32 @@ main();
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json()); 
+
+// CORS configuration
 app.use(cors({
     origin: "https://nochat-iqi1.onrender.com",
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Session configuration
 app.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URI,
         ttl: 24 * 60 * 60,
     }),
-    secret: "superSecret%$",
+    secret: process.env.SESSION_SECRET || "superSecret%$",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { 
         secure: true,
         httpOnly: true, 
-        maxAge: 1000 * 60 * 60, 
-        sameSite: "none" },
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        sameSite: "none",
+        domain: ".onrender.com" // Allow cookies across subdomains
+    },
+    name: 'sessionId' // Explicitly set cookie name
 }));
 
 app.use("/user", userRouter);
@@ -54,6 +62,8 @@ const io = new Server(server, {
     cors: {
         origin: "https://nochat-iqi1.onrender.com", 
         credentials: true,
+        methods: ['GET', 'POST'],
+        allowedHeaders: ['Content-Type', 'Authorization']
     },
 });
 
