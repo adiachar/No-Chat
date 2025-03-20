@@ -31,7 +31,7 @@ app.use(cors({
     origin: "https://nochat-iqi1.onrender.com",
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
 
 // Session configuration
@@ -47,10 +47,10 @@ app.use(session({
         secure: true,
         httpOnly: true, 
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        sameSite: "none",
-        domain: ".onrender.com" // Allow cookies across subdomains
+        sameSite: "None",
+        path: "/"
     },
-    name: 'sessionId' // Explicitly set cookie name
+    name: 'sessionId'
 }));
 
 app.use("/user", userRouter);
@@ -63,7 +63,7 @@ const io = new Server(server, {
         origin: "https://nochat-iqi1.onrender.com", 
         credentials: true,
         methods: ['GET', 'POST'],
-        allowedHeaders: ['Content-Type', 'Authorization']
+        allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
     },
 });
 
