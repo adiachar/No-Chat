@@ -11,13 +11,12 @@ export default function ConnectionRequests(){
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const connectionRequests = useSelector((state) => state.connectionRequests);
-    const ip = useSelector(state => state.ip);
+
     useEffect(() => {
         if(connectionRequests){
             console.log("making connection request");
-            axios.get(`http://${ip}:5000/data/connectionRequests`, {withCredentials: true})
+            axios.get(`https://nochat.onrender.com/data/connectionRequests`, {withCredentials: true})
             .then((res) => {
-                console.log(res.data);
                 let connectionRequests = res.data;
                 dispatch(setConnectionRequests(connectionRequests));
             }).catch((err) => console.log(err));            
@@ -25,7 +24,7 @@ export default function ConnectionRequests(){
     },[]);
 
     function acceptRequest(_id){
-        axios.post(`http://${ip}:5000/connection/accept`, {from: user._id, to: _id})
+        axios.post(`https://nochat.onrender.com/connection/accept`, {from: user._id, to: _id})
         .then((res) => {
             if(res.data.connectionRequests && res.data.connections){
                 let connections = res.data.connections;
@@ -39,7 +38,7 @@ export default function ConnectionRequests(){
     }
 
     function rejectRequest(_id){
-        axios.post(`http://${ip}:5000/connection/reject`, {from: user._id, to: _id})
+        axios.post(`https://nochat.onrender.com/connection/reject`, {from: user._id, to: _id})
         .then((res) => {
             if(res.data.connectionRequests){
                 let connectionRequests = res.data.connectionRequests;

@@ -7,13 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
 import "./SignUp.css";
 
-const socket = io(`http://192.168.81.22:5000`);
+const socket = io(`https://nochat.onrender.com`);
 
 
 export default function SignUp(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const ip = useSelector(state => state.ip);
     const [error, setError] = useState("");
     const initialValues = {
         userName: "",
@@ -30,7 +29,7 @@ export default function SignUp(){
         onSubmit: (values) =>{
             if(formik.values.confirmPassword === formik.values.password){
                 setError("");
-                axios.post(`http://${ip}:5000/user/signUp`, {values}, {withCredentials: true})
+                axios.post(`https://nochat.onrender.com/user/signUp`, {values}, {withCredentials: true})
                 .then((res) =>{
                     if(res.data.user){
                         let user = res.data.user;

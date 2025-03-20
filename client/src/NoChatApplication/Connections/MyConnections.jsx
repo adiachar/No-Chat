@@ -7,13 +7,10 @@ import { setConnections } from "../../features/NoChatApp/noChatAppSlice.js";
 
 export default function MyConnections(){
     const connections = useSelector((state) => state.connections);
-    const connectionRequests = useSelector((state) => state.connectionRequests);
-    const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
-    const ip = useSelector((state) => state.ip);
     
     useEffect(() => {
-            axios.get(`http://${ip}:5000/data/connections`, {withCredentials: true})
+            axios.get(`https://nochat.onrender.com/data/connections`, {withCredentials: true})
             .then((res) => {
                 if(res.data.connections){
                     let connections = res.data.connections;

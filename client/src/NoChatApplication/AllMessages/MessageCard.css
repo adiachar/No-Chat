@@ -23,10 +23,11 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    & p{
-        margin-top: 0.5rem;
-        overflow-x: auto;
-    }
+}
+
+.MessageCard .message p{
+    margin-top: 0.5rem;
+    overflow-x: auto;
 }
 
 .MessageCard .AccountSymbl{

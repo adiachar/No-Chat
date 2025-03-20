@@ -7,11 +7,10 @@ import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import io from "socket.io-client";
 
-const socket = io(`http://192.168.81.22:5000`);
+const socket = io(`https://nochat.onrender.com`);
 
 
 export default function SignIn(){
-    const ip = useSelector((state) => state.ip);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loginStatus, setLoginStatus] = useState("");
@@ -25,7 +24,7 @@ export default function SignIn(){
         validate: () => { //No validation for now
             },
         onSubmit: (values) =>{
-            axios.post(`http://${ip}:5000/user/signIn`, values, {withCredentials: true})
+            axios.post(`https://nochat.onrender.com/user/signIn`, values, {withCredentials: true})
             .then((res) => {
                 if(res.data.user){
                     let user = res.data.user;
