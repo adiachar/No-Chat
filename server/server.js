@@ -12,16 +12,7 @@ const {onlineUsers} = require("./onlineUsers.js");
 const dotenv = require("dotenv");
 dotenv.config();
 const MongoStore = require("connect-mongo");
-
-const main = async () => {
-    try{
-        await mongoose.connect(process.env.MONGODB_URI);       
-        console.log("connected to MongoDB Atlas!");
-    }catch(error){
-        console.error("error connecting to MongoDB:", error);
-    }
-}
-main();
+const url = process.env.MONGODB_URL;
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json()); 
@@ -37,7 +28,7 @@ app.use(cors({
 // Session configuration
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI,
+        mongoUrl: url,
         ttl: 24 * 60 * 60,
     }),
     secret: process.env.SESSION_SECRET || "superSecret%$",
@@ -90,6 +81,10 @@ io.on("connection", (socket) =>{
     });
 });
 
-server.listen(5000, '0.0.0.0', () =>{
-    console.log("...");
+const PORT = process.env.PORT || 8080
+server.listen(PORT, () =>{
+    console.log("listening to the port", PORT);
+    mongoose.connect(url)
+    .then(() => console.log("database connected!"))
+    .catch(() => console.log("db connection error!"));
 });
