@@ -21,8 +21,6 @@ app.use(express.json());
 app.use(cors({
     origin: "https://nochat-iqi1.onrender.com",
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
 
 // Session configuration
@@ -41,7 +39,6 @@ app.use(session({
         sameSite: "None",
         path: "/"
     },
-    name: 'sessionId'
 }));
 
 app.use("/user", userRouter);
@@ -53,8 +50,6 @@ const io = new Server(server, {
     cors: {
         origin: "https://nochat-iqi1.onrender.com", 
         credentials: true,
-        methods: ['GET', 'POST'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
     },
 });
 
