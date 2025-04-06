@@ -1,6 +1,9 @@
+const bcrypt = require("bcrypt");
 const User = require("../model/user.js");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 
-let secretKey = "Super&secret%$";
+dotenv.config();
 
 module.exports.userSignUp = async (req, res) =>{
     const userData = req.body.values;
@@ -8,20 +11,22 @@ module.exports.userSignUp = async (req, res) =>{
         let existingUser = await User.findOne({email: userData.email});
         if(existingUser != null){
             console.log(existingUser);
-            return res.status(400).json({message: "Email is already in use. Please use a unique email."});
+            return res.status(400).json({message: "Email is already Registered!."});
         }
-        let newUser = {
+
+        let hashedPassword = await bcrypt.hash(userData.password, 10);
+        let user = new User({
             userName: userData.userName,
             dob: userData.dob,
             email: userData.email,
-            password: userData.password,
-        };
-        newUser = new User(newUser);
-        console.log(newUser);
-        await newUser.save();
-        let userObject = newUser.toObject();
-        let user = {_id: userObject._id, userName: userObject.userName, email: userObject.email};
-        res.status(201).json({user});
+            password: hashedPassword,
+        });
+        console.log(user);
+        await user.save();
+        
+        let token = jwt.sign(user.toObject(), process.env.SECRET_KEY, {expiresIn: "1h"});
+        return res.status(201).json({message: "SignUp Successful", token: token});
+
     }catch(err){
         console.log(err);
         res.status(500).json({message: "Internal server error"});
@@ -29,26 +34,37 @@ module.exports.userSignUp = async (req, res) =>{
 }
 
 module.exports.userSignIn = async (req, res) =>{
-    User.findOne({email: req.body.email}, "_id userName email password").lean()
-    .then((user) => {
-        if (user) {
-            if (user.password == req.body.password) {
-                delete user.password;
-                req.session.user = user;
-                res.send({user});
-            } else {
-                res.send("Incorrect Password");
-            }
-        } else {
-            res.json("User Not Found!");
-        }
-    });
+    try{
+        const user = User.findOne({email: req.body.email}, "_id userName email password").lean();
+        if (!user) {
+            return res.status(404).json("User Not Found!");
+        } 
+
+        const isPassword = await bcrypt.compare(req.body.password, user.password);
+
+        if (!isPassword) {
+            return res.status(404).json("Incorrect Password");  
+        } 
+
+        let token = jwt.sign(user, process.env.SECRET_KEY, 10);
+        return res.status(201).json({message: "SignIn Successful", token: token});
+
+    } catch(err){
+        console.log(err);
+    } 
 }
 
 module.exports.validateSession = (req, res) =>{
-    if(req.session.user){
-        res.send({valid: true, user: req.session.user});
-    }else{
-        res.json({valid: false});
+    let token = req.headers.authorization?.split(' ')[1];
+    if(!token) {
+        return res.status(404).json({message: "invalid header"});
+    }
+
+    try {
+        const user = jwt.verify(token, process.env.SECRET_KEY);
+        return res.status(201).json({message: "token valid"});
+
+    } catch(err) {
+        return res.status(404).json({message: "token invalid"});
     }
 }

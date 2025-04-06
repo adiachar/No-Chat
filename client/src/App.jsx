@@ -1,5 +1,5 @@
 import "./App.css";
-import NoChatApp from "./NoChatApplication/NoChatApp.jsx";
+import NoChatApp from "./components/NoChatApp.jsx";
 import {Provider} from "react-redux";
 import {store} from "./app/store.js";
 
