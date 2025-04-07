@@ -1,52 +1,67 @@
 import { useFormik } from "formik";
 import axios from "axios";
 import { useState } from "react";
-import { setUser } from "../../features/NoChatApp/noChatAppSlice";
+import { setConnectionRequests, setConnections, setUser } from "../../features/NoChatApp/noChatAppSlice";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import io from "socket.io-client";
-import "./SignUp.css";
+import "./Signing.css";
 
-const socket = io(`http://192.168.96.22:5000`);
+const socket = io(`http://localhost:5000`);
 
+const client = axios.create({
+    baseURL: "http://localhost:5000/user"
+});
 
 export default function SignUp(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const ip = useSelector(state => state.ip);
-    const [error, setError] = useState("");
+    const [status, setStatus] = useState("");
     const initialValues = {
         userName: "",
-        dob: 0,
+        dob: "",
         email: "",
         password: "",
-        confirmPassword: "",
+        confirmPassword: ""
     }
 
     const formik = useFormik({
         initialValues,
+
         validate: () => { //No validation for now
             },
-        onSubmit: (values) =>{
-            if(formik.values.confirmPassword === formik.values.password){
-                setError("");
-                axios.post(`http://${ip}:5000/user/signUp`, {values}, {withCredentials: true})
-                .then((res) =>{
-                    if(res.data.user){
-                        let user = res.data.user;
-                        socket.emit("register", {_id: user._id});
+
+        onSubmit: async (values) => {
+            if(formik.values.confirmPassword === formik.values.password) {
+
+                try{
+                    const response = await client.post(`/signUp`, values);
+
+                    if(response.status === 200) {
+                        localStorage.setItem("token", response.data.token);
+                        
+                        const user = {
+                            _id: response.data.user._id,
+                            userName: response.data.user.userName,
+                            email: response.data.user.email
+                        }
+
                         dispatch(setUser(user));
-                        navigate("/");
-                    }else{
-                        console.log("Did not get user data from server");
+                        dispatch(setConnections(response.data.user.connections));
+                        dispatch(setConnectionRequests(response.data.user.connectionRequests));
+                        socket.emit("register", {_id: response.data.user._id});
+                        navigate('/');
+
+                    } else {
+                        setStatus(response.data.message);
                     }
-                }).catch((err) => {
-                    if(err.response.data.message){
-                        setError(err.response.data.message);
-                    }
-                });
-            }else{
-                setError("Please check the password...");
+                } catch(err) {
+                    console.log(err);
+                    setStatus("Internal Server Error!");
+                }
+                
+            } else {
+                setStatus("Please check the password!");
             }
         }
     });
@@ -80,7 +95,7 @@ export default function SignUp(){
                     <label htmlFor="confirmPassword">Confirm Password: </label>
                     <input type="text" id="confirmPassword" name="confirmPassword" placeholder="Congirm Password" value={formik.values.confirmPassword} onChange={handlechange}/>
                 </div>
-                {error ? <p>{error}</p> : null}
+                {status ? <p>{status}</p> : null}
                 <button type="submit">SignUp</button>
             </form>
         </div>

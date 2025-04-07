@@ -1,20 +1,22 @@
 import { useFormik } from "formik";
 import axios from "axios";
 import { setUser } from "../../features/NoChatApp/noChatAppSlice";
-import "./SignUp.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import io from "socket.io-client";
+import "./Signing.css";
 
-const socket = io(`http://192.168.96.22:5000`);
+const socket = io(`http://localhost:5000`);
 
+const client = axios.create({
+    baseURL: "http://localhost:5000/user"
+});
 
 export default function SignIn(){
-    const ip = useSelector((state) => state.ip);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [loginStatus, setLoginStatus] = useState("");
+    const [status, setStatus] = useState(""); 
     const initialValues = {
         email: "",
         password: "",
@@ -22,20 +24,29 @@ export default function SignIn(){
 
     const formik = useFormik({
         initialValues,
+
         validate: () => { //No validation for now
             },
-        onSubmit: (values) =>{
-            axios.post(`http://${ip}:5000/user/signIn`, values)
-            .then((res) => {
-                if(res.data.user){
-                    let user = res.data.user;
-                    socket.emit("register", {_id: user._id});
-                    dispatch(setUser(user));
-                    navigate("/");
+        
+        onSubmit: async (values) => {
+            try{
+                const response = await client.post(`/signIn`, values);
+
+                if(response.status === 200) {
+                    localStorage.setItem("token", response.data.token);
+                    dispatch(setUser(response.data.user));
+                    socket.emit("register", {_id: response.data.user._id});
+                    navigate('/');  
+
                 } else {
-                    setLoginStatus(res.data);
-                }
-            });
+                    setStatus(response.data.message);
+                }   
+
+            } catch(err) {
+                console.log(err);
+                setStatus("Internal Server Error!");
+            }
+
         }
     });
 
@@ -57,7 +68,7 @@ export default function SignIn(){
                     <input type="password" id="password" name="password" placeholder="Password" value={formik.values.password} onChange={handlechange}/>
                 </div>
                 <button type="submit">SignIn</button>
-                {loginStatus ? <p className="status">{loginStatus}</p> : null}
+                {status ? <p className="status">{status}</p> : null}
             </form>
             <p className="signUp-nav">Don't have an Account ? <Link to={"/SignUp"}>Click here to sign up</Link></p>
         </div>

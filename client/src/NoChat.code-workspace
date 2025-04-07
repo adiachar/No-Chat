@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../conferenceApp/backend"
+		},
+		{
+			"path": "../../../conferenceApp/frontend/src"
+		}
+	],
+	"settings": {}
+}
