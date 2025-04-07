@@ -17,7 +17,6 @@ export default function Chat(){
     const [chatHeight, setChatHeight] = useState("0vh");
     let [messages, setMessages] = useState([]);
     let user = useSelector(state => state.user);
-    let ip = useSelector(state => state.ip);
 
     useEffect(() => {
         getChat();
@@ -35,7 +34,7 @@ export default function Chat(){
     }
 
     async function getChat(){
-        axios.get(`http://${ip}:5000/data/conversation/${connectionId}`, {withCredentials: true})
+        axios.get(`http://localhost:5000:5000/data/conversation/${connectionId}`, {withCredentials: true})
         .then((res) => {
             if(res.data){
                 setMessages(res.data);

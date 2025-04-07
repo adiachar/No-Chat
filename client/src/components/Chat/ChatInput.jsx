@@ -9,7 +9,6 @@ export default function ChatInput({connectionId, updateChat}){
     const dispatch = useDispatch();
     const [input, setInput] = useState("");
     const user = useSelector((state) => state.user);
-    const ip = useSelector(state => state.ip);
 
     function handleChange(value){
         if(value != " "){
@@ -20,7 +19,7 @@ export default function ChatInput({connectionId, updateChat}){
 
     function leaveMessage(){
         if(input && input != " "){
-            axios.post(`http://${ip}:5000/data/storeMessage`, {from: user._id, to: connectionId, message: input})
+            axios.post(`http://localhost:5000:5000/data/storeMessage`, {from: user._id, to: connectionId, message: input})
             .then((res) => {
                 if(res.data.success){
                     setInput("");

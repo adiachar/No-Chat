@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import io from "socket.io-client";
 
-const socket = io.connect("http://192.168.96.22:5000");
+const socket = io.connect("http://localhost:5000");
 
 const initialState = {
     outgoingMsg: "",
@@ -10,12 +10,15 @@ const initialState = {
     to: "",
     connections: {},
     connectionRequests: [],
-    ip: "192.168.96.22",
 }
 const noChatSlice = createSlice({
     name: "noChat",
     initialState,
     reducers: {
+        setUser: (state, action) => {
+            state.user = action.payload;
+        },
+        
         sendMessage: (state, action) => {
             let msg = action.payload.msg;
             let to = action.payload.to;
@@ -29,10 +32,6 @@ const noChatSlice = createSlice({
         setIncommingMsg: (state, action) => {
             let incommingMsg = action.payload;
             state.connections[incommingMsg.from].msg = incommingMsg.msg;
-        },
-
-        setUser: (state, action) => {
-            state.user = action.payload;
         },
 
         setConnections: (state, action) => {
