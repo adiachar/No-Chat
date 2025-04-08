@@ -7,10 +7,10 @@ import { useDispatch } from "react-redux";
 import io from "socket.io-client";
 import "./Signing.css";
 
-const socket = io(`http://localhost:5000`);
+const socket = io(`https://nochat.onrender.com`);
 
 const client = axios.create({
-    baseURL: "http://localhost:5000/user"
+    baseURL: "https://nochat.onrender.com/user"
 });
 
 export default function SignUp(){

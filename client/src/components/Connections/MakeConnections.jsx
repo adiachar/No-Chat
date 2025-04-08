@@ -13,7 +13,7 @@ export default function MakeConnections(){
         let token = localStorage.getItem("token");
 
         if(token) {
-            let response = await axios.get(`http://localhost:5000/data/allUsers`, {headers});
+            let response = await axios.get(`https://nochat.onrender.com/data/allUsers`, {headers});
             
             if(response.status === 200 ) {
                 setAllUsers(response.data.allUsers);
@@ -28,7 +28,7 @@ export default function MakeConnections(){
 
     function requestConnection(to_id){
         console.log("making connection");
-        axios.post(`http://localhost:5000/connection/request-connection`, {to_id: to_id}, {headers})
+        axios.post(`https://nochat.onrender.com/connection/request-connection`, {to_id: to_id}, {headers})
         .then((res) => {
             if(res.status === 200) {
                 console.log("Request Sent!");

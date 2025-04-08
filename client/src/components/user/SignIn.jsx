@@ -7,10 +7,10 @@ import { Link, useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import "./Signing.css";
 
-const socket = io(`http://localhost:5000`);
+const socket = io(`https://nochat.onrender.com`);
 
 const client = axios.create({
-    baseURL: "http://localhost:5000/user"
+    baseURL: "https://nochat.onrender.com/user"
 });
 
 export default function SignIn(){
@@ -49,7 +49,7 @@ export default function SignIn(){
 
             } catch(err) {
                 console.log(err);
-                setStatus("Internal Server Error!");
+                setStatus(err.response ? err.response.data.message : "Internal Server Error!");
             }
         }
     });
@@ -74,7 +74,7 @@ export default function SignIn(){
                 <button type="submit">SignIn</button>
                 {status ? <p className="status">{status}</p> : null}
             </form>
-            <p className="signUp-nav">Don't have an Account ? <Link to={"/SignUp"}>Click here to sign up</Link></p>
+            <p className="signUp-nav">Don't have an Account ? <Link to={"/sign-up"}>Click here to sign up</Link></p>
         </div>
     );
 }

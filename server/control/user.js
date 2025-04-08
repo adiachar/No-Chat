@@ -56,7 +56,7 @@ module.exports.userSignIn = async (req, res) =>{
         .populate("connectionRequests", "_id userName email").lean();
 
         if(!user) {
-            return res.status(404).json("User Not Found!");
+            return res.status(404).json({message: "User Not Found!"});
         } 
         
         const isPassword = await bcrypt.compare(req.body.password, user.password);

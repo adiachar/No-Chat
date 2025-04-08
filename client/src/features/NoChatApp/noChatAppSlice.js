@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import io from "socket.io-client";
 
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect("https://nochat.onrender.com");
 
 const initialState = {
     allMessages: [],

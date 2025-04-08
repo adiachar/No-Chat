@@ -30,7 +30,7 @@ export default function Chat(){
 
     async function getChat(){
         try {
-            let response = await axios.get(`http://localhost:5000/data/conversation/${con_id}`, {headers});
+            let response = await axios.get(`https://nochat.onrender.com/data/conversation/${con_id}`, {headers});
             
             if(response.status === 200) {
                 setMessages(response.data.messages);                

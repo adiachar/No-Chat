@@ -14,7 +14,7 @@ import MakeConnections from "./Connections/MakeConnections.jsx";
 import ConnectionRequests from "./Connections/ConnectionRequests.jsx";
 import axios from "axios";
 
-const socket = io(`http://localhost:5000`);
+const socket = io(`https://nochat.onrender.com`);
 
 export default function NoChatApp(){
 
@@ -32,7 +32,7 @@ export default function NoChatApp(){
             }
 
             try{
-                const response = await axios.get(`http://localhost:5000/user/validateToken`, {headers});
+                const response = await axios.get(`https://nochat.onrender.com/user/validateToken`, {headers});
 
                 if(response.status === 200) {
 
