@@ -8,29 +8,19 @@ const userRouter = require("./router/userRouter.js");
 const dataRouter = require("./router/dataRouter.js");
 const connectionRouter = require("./router/connectionRouter.js");
 const mongoose = require("mongoose");
-const session = require("express-session");
 const http = require("http");
 const {onlineUsers} = require("./onlineUsers.js");
-const { authorization } = require("./authorization.js");
 
 const main = async () => {
-    await mongoose.connect("mongodb://localhost:27017/noChat");
+    await mongoose.connect(process.env.MONGO_URL);
 }
-
-main().then(() => console.log("connected to db"));
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json()); 
+
 app.use(cors({
     origin: '*',
     credentials: true,
-}));
-
-app.use(session({
-    secret: "superSecret%$",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false, maxAge: 3600000 },
 }));
 
 app.use("/user", userRouter);
@@ -41,7 +31,6 @@ const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         origin: '*',       
-        methods: ["GET", "POST"],
         credentials: true,
     },
 });
@@ -69,12 +58,9 @@ io.on("connection", (socket) =>{
     });
 });
 
-app.get("/", authorization, (req, res) => {
-    return res.status(201).json({message: "Authorized!", user: req.user});
-});
-
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () =>{
-    console.log("...");
+    console.log("Listening to PORT:", PORT);
+    main().then(() => console.log("connected to db!"));
 });
