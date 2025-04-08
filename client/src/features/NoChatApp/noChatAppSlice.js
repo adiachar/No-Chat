@@ -4,12 +4,12 @@ import io from "socket.io-client";
 const socket = io.connect("http://localhost:5000");
 
 const initialState = {
-    outgoingMsg: "",
     allMessages: [],
     user: {_id: "", userName: "", email: ""},
     to: "",
     connections: {},
     connectionRequests: [],
+    headers: {}
 }
 const noChatSlice = createSlice({
     name: "noChat",
@@ -19,14 +19,17 @@ const noChatSlice = createSlice({
             state.user = action.payload;
         },
         
-        sendMessage: (state, action) => {
-            let msg = action.payload.msg;
-            let to = action.payload.to;
-            socket.emit("message", {from: state.user._id, msg: msg, to: to});
+        setHeaders: (state, action) => {
+            state.headers = {
+                authorization: `Bearer ${action.payload}`
+            }
         },
 
-        clearMessage: (state, action) => {
-            state.outgoingMsg = "";
+        sendMessage: (state, action) => {
+            let from = state.user._id;
+            let msg = action.payload.msg;
+            let to = action.payload.to;
+            socket.emit("message", {from: from, msg: msg, to: to});
         },
 
         setIncommingMsg: (state, action) => {
@@ -51,6 +54,7 @@ export const {
     clearMessage, 
     setIncommingMsg, 
     setUser, 
+    setHeaders,
     setConnections,
     setConnectionRequests,
 } = noChatSlice.actions;

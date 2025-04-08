@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Chat(){
+
     const location = useLocation();
     const navigate = useNavigate();
     const connectionId = location.state;
@@ -17,39 +18,45 @@ export default function Chat(){
     const [chatHeight, setChatHeight] = useState("0vh");
     let [messages, setMessages] = useState([]);
     let user = useSelector(state => state.user);
+    let headers = useSelector(state => state.headers);
+
+    let con_id = [user._id, connectionId].sort().join("_");
+
 
     useEffect(() => {
         getChat();
+
     }, []);
 
-    function showChat(){
+    async function getChat(){
+        try {
+            let response = await axios.get(`http://localhost:5000/data/conversation/${con_id}`, {headers});
+            
+            if(response.status === 200) {
+                setMessages(response.data.messages);                
+            }
+
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
+    function showChatHistory(){
         if(msgHeight == "100vh"){
             setMsgHeight("2vh");
             setChatHeight("90vh");
             getChat();
+            
         }else{
             setMsgHeight("100vh");
             setChatHeight("0vh");
         }
     }
 
-    async function getChat(){
-        axios.get(`http://localhost:5000:5000/data/conversation/${connectionId}`, {withCredentials: true})
-        .then((res) => {
-            if(res.data){
-                setMessages(res.data);
-            }else{
-                console.log("Did not received connections from server");
-            }
-        }).catch((err) => {
-            console.log(err);
-        });
-    }
-
     return(
         <div className={ch.Chat}>
             <div className={ch.btns}>
-                <Fab variant="extended" size="large" className={ch.chatIcon} onClick={() => showChat()}>
+                <Fab variant="extended" size="large" className={ch.chatIcon} onClick={() => showChatHistory()}>
                     <p>{chatHeight != "0vh" ? "Close Chat":"See Chat"}</p>
                     <ChatIcon fontSize="medium" className="icon"/>
                 </Fab>

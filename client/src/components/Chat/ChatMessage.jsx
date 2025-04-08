@@ -30,7 +30,9 @@ export default function ChatMessage({connectionId}){
     return(
         <div className={`ChatMessage`} ref={containerRef}>
             <div className="toUser">
-                <AccountSymbl userName={connections[connectionId] ? connections[connectionId].userName : "A"} isOnline={connections[connectionId] ? connections[connectionId].isOnline : false}/>
+                <AccountSymbl 
+                userName={connections[connectionId] ? connections[connectionId].userName : "A"} 
+                isOnline={connections[connectionId] ? connections[connectionId].isOnline : false}/>
                 <p>{connections[connectionId] ? connections[connectionId].userName : "unknown"}</p>
             </div>
             <div className="h1">

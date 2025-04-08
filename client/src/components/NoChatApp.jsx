@@ -7,7 +7,7 @@ import SignUp from "./user/SignUp.jsx";
 import SignIn from "./user/SignIn.jsx";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {setIncommingMsg, setUser, setConnectionRequests, setConnections} from "../features/NoChatApp/noChatAppSlice.js";
+import {setIncommingMsg, setUser, setConnectionRequests, setConnections, setHeaders} from "../features/NoChatApp/noChatAppSlice.js";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import MyConnections from "./Connections/MyConnections.jsx";
 import MakeConnections from "./Connections/MakeConnections.jsx";
@@ -45,6 +45,7 @@ export default function NoChatApp(){
                     }
 
                     dispatch(setUser(user));
+                    dispatch(setHeaders(response.data.token));
                     dispatch(setConnections(response.data.user.connections));
                     dispatch(setConnectionRequests(response.data.user.connectionRequests));
                     socket.emit("register", {_id: response.data.user._id});
@@ -62,7 +63,8 @@ export default function NoChatApp(){
 
         const token = localStorage.getItem("token");
 
-        if(token){
+        if(token && location.pathname != "/sign-in"){
+            console.log(location.pathname);
             validateToken(token);
         }
 

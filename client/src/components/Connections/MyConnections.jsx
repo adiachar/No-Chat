@@ -8,7 +8,7 @@ export default function MyConnections(){
 
     return(
         <div className="MyConnections">
-            {connections ? Object.entries(connections).map(([key, value]) => (
+            {Object.entries(connections).length != 0 ? Object.entries(connections).map(([key, value]) => (
                 <MessageCard connection = {value} key={key}/>
             )): <h1 className="noConnections">No Connections! Try making new connections</h1>}
         </div>

@@ -9,42 +9,25 @@ let hStyle = {width: "100%", marginTop: "2rem", textAlign: "center", color: "rgb
 
 export default function ConnectionRequests(){
     const user = useSelector((state) => state.user);
+    const headers = useSelector((state) => state.headers);
+
     const dispatch = useDispatch();
+
     const connectionRequests = useSelector((state) => state.connectionRequests);
 
-    useEffect(() => {
-        if(connectionRequests){
-            console.log("making connection request");
-            axios.get(`http://localhost:5000/data/connectionRequests`, {withCredentials: true})
-            .then((res) => {
-                console.log(res.data);
-                let connectionRequests = res.data;
-                dispatch(setConnectionRequests(connectionRequests));
-            }).catch((err) => console.log(err));            
-        }
-    },[]);
-
-    function acceptRequest(_id){
-        axios.post(`http://localhost:5000/connection/accept`, {from: user._id, to: _id})
+    function acceptRequest(to_id){
+        axios.post(`http://localhost:5000/connection/accept`, {to_id: to_id}, {headers})
         .then((res) => {
-            if(res.data.connectionRequests && res.data.connections){
-                let connections = res.data.connections;
-                let connectionRequests = res.data.connectionRequests;
-                dispatch(setConnections(connections));
-                dispatch(setConnectionRequests(connectionRequests));
-            }
+            console.log(res.data.message);
         }).catch((err) => {
             console.log(err);
         });
     }
 
-    function rejectRequest(_id){
-        axios.post(`http://localhost:5000/connection/reject`, {from: user._id, to: _id})
+    function rejectRequest(to_id){
+        axios.post(`http://localhost:5000/connection/reject`, {to_id: to_id}, {headers})
         .then((res) => {
-            if(res.data.connectionRequests){
-                let connectionRequests = res.data.connectionRequests;
-                dispatch(setConnectionRequests(connectionRequests));
-            }
+            console.log(res.data.message);
         }).catch((err) => {
             console.log(err);
         });

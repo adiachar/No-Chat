@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import axios from "axios";
-import { setUser } from "../../features/NoChatApp/noChatAppSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { setUser, setHeaders, setConnectionRequests, setConnections} from "../../features/NoChatApp/noChatAppSlice";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import io from "socket.io-client";
@@ -33,8 +33,13 @@ export default function SignIn(){
                 const response = await client.post(`/signIn`, values);
 
                 if(response.status === 200) {
+
                     localStorage.setItem("token", response.data.token);
+
                     dispatch(setUser(response.data.user));
+                    dispatch(setHeaders(response.data.token));
+                    dispatch(setConnections(response.data.user.connections));
+                    dispatch(setConnectionRequests(response.data.user.connectionRequests));
                     socket.emit("register", {_id: response.data.user._id});
                     navigate('/');  
 
@@ -46,7 +51,6 @@ export default function SignIn(){
                 console.log(err);
                 setStatus("Internal Server Error!");
             }
-
         }
     });
 

@@ -11,6 +11,7 @@ import { useState } from "react";
 export default function Header({symbol}){
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
+
     const [btnSelect, setBtnSelect] = useState("chat");
 
     function handleClick(address, btn){
