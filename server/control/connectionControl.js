@@ -1,16 +1,6 @@
 const User = require("../model/user.js");
 const Conversation = require("../model/conversation.js");
 
-module.exports.connectionRequest = async (req, res) => {
-    let {from, to} = req.body;
-    let result = await User.findByIdAndUpdate(to, {$push: {connectionRequests: from}}, {new: true});
-    if(result){
-        res.status(200).send("success");
-    }else{
-        res.status(200).send("failure");
-    }
-}
-
 module.exports.acceptConnection = async (req, res) => {
     let {from, to} = req.body;
     if(!from || !to){

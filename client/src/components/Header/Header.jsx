@@ -24,7 +24,7 @@ export default function Header({symbol}){
                 <h1>{user.userName}</h1>
                 <Stack spacing={1} direction="row">
                     <Fab color="" aria-label="add" className="iconBtn"
-                    onClick={() => navigate("/ConnectionRequests")}>
+                    onClick={() => navigate("/connection-requests")}>
                         <NotificationsNoneIcon className="icon"/>
                     </Fab>
                     <Fab color="" aria-label="add" className="iconBtn">
@@ -40,7 +40,7 @@ export default function Header({symbol}){
                 className={`btn btnLeft ${btnSelect == "chat" ? "selected" : ""}`}>All Chat</Button>
 
                 <Button variant={btnSelect == "connect" ? "contained" : "text"} 
-                onClick={() => {handleClick("/MakeConnections", "connect")}} 
+                onClick={() => {handleClick("/make-connections", "connect")}} 
                 className={`btn  ${btnSelect == "connect" ? "selected" : ""}`}>Connect</Button>
 
                 <Button variant={btnSelect == "community" ? "contained" : "text"} 

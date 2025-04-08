@@ -7,7 +7,7 @@ import SignUp from "./user/SignUp.jsx";
 import SignIn from "./user/SignIn.jsx";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {setIncommingMsg, setUser} from "../features/NoChatApp/noChatAppSlice.js";
+import {setIncommingMsg, setUser, setConnectionRequests, setConnections} from "../features/NoChatApp/noChatAppSlice.js";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import MyConnections from "./Connections/MyConnections.jsx";
 import MakeConnections from "./Connections/MakeConnections.jsx";
@@ -16,35 +16,57 @@ import axios from "axios";
 
 const socket = io(`http://localhost:5000`);
 
-
-
 export default function NoChatApp(){
+
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
-    const to = useSelector((state) => state.to);
 
-    // useEffect(() => {
-    //     async function validateSession(){
-    //         axios.get(`http://${ip}:5000/user/validateSession`, {withCredentials: true})
-    //         .then((res) => {
-    //             if(res.data.valid){
-    //                 let user = res.data.user;
-    //                 socket.emit("register", {_id: user._id});
-    //                 dispatch(setUser(user));
-    //                 navigate("/");
-    //             }else{
-    //                 navigate("/SignIn");
-    //             }
-    //         }).catch((err) => {
-    //             console.log("error");
-    //         });
-    //     }
-    //     if(!user._id){
-    //         validateSession();
-    //     }
-    // },[user]);
+    useEffect(() => {
+
+        async function validateToken(token){
+
+            const headers = {
+                Authorization: `Bearer ${token}`
+            }
+
+            try{
+                const response = await axios.get(`http://localhost:5000/user/validateToken`, {headers});
+
+                if(response.status === 200) {
+
+                    localStorage.setItem("token", response.data.token);
+
+                    const user = {
+                        _id: response.data.user._id,
+                        userName: response.data.user.userName,
+                        email: response.data.user.email
+                    }
+
+                    dispatch(setUser(user));
+                    dispatch(setConnections(response.data.user.connections));
+                    dispatch(setConnectionRequests(response.data.user.connectionRequests));
+                    socket.emit("register", {_id: response.data.user._id});
+                    navigate('/');
+
+                } else {
+                    navigate("/sign-in");
+                }
+
+            } catch(err) {
+                console.log(err);
+                navigate("/sign-in")
+            }
+        }
+
+        const token = localStorage.getItem("token");
+
+        if(token){
+            validateToken(token);
+        }
+
+    },[]);
 
     socket.on("response", (incommingMsg) => {
         if(incommingMsg.to == user._id){
@@ -52,7 +74,7 @@ export default function NoChatApp(){
         }
     });
 
-    const noHeaderRouts = ["/SignIn", "/SignUp", "/chat"];
+    const noHeaderRouts = ["/sign-in", "/sign-up", "/chat"];
 
     return(
         <div className="NoChatApp">
@@ -60,10 +82,10 @@ export default function NoChatApp(){
             <Routes>
                 <Route path="/" element={<MyConnections/>}/>
                 <Route path="/chat" element={<Chat/>} />
-                <Route path="/SignUp" element={<SignUp/>} />
-                <Route path="/SignIn" element={<SignIn/>} />
-                <Route path="/MakeConnections" element={<MakeConnections/>} />
-                <Route path="/ConnectionRequests" element={<ConnectionRequests/>} />
+                <Route path="/sign-up" element={<SignUp/>} />
+                <Route path="/sign-in" element={<SignIn/>} />
+                <Route path="/make-connections" element={<MakeConnections/>} />
+                <Route path="/connection-requests" element={<ConnectionRequests/>} />
             </Routes>
         </div>
     );
