@@ -8,6 +8,7 @@ import { useState } from "react";
 export default function MessageCard({connection, btn1, btn2}){
     const navigate = useNavigate();
     const [isClicked, setIsClicked] = useState(false);
+    
     function handleclick(){
         if(typeof(btn1) == "undefined" && typeof(btn2) == "undefined"){
             navigate("/chat", {state: connection._id});
@@ -21,7 +22,7 @@ export default function MessageCard({connection, btn1, btn2}){
                 <h3>{connection.userName ? connection.userName : "unknown"}:</h3>
                 {(btn1 && !btn2) && (
                     <div className="btnContainer">
-                        <Button variant="outlined" color="success" disabled={isClicked} onClick={() => {setIsClicked(true);btn1(connection._id)}}>Connect</Button>
+                        <Button variant="outlined" color="success" disabled={isClicked} onClick={() => {setIsClicked(true); btn1(connection._id)}}>Connect</Button>
                     </div>
                 )}
 

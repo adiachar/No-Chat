@@ -13,13 +13,13 @@ router.route("/allUsers")
     getAllUsers(req, res);
 });
 
-router.route("/storeMessage")
-.post((req, res) => {
+router.route("/store-message")
+.post(authorization, (req, res) => {
     storeMessage(req, res);
 });
 
-router.route("/conversation/:connectionId")
-.get((req, res) => {
+router.route("/conversation/:conversationId")
+.get(authorization, (req, res) => {
     getMessages(req, res);
 });
 

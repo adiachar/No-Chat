@@ -3,20 +3,19 @@ const User = require("../model/user.js");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const Conversation = require("../model/conversation.js");
-const onlineUsers = require("../onlineUsers.js");
+const {onlineUsers} = require("../onlineUsers.js");
 
 dotenv.config();
 
-const isUsersOnline = async (connections) => {
+const isUsersOnline = async (user_id, connections) => {
     for(let connection of connections){
         connection.isOnline = onlineUsers.has(connection._id.toString());
-        let con_id = [req.user_id, connection._id].sort().join("_");
+        let con_id = [user_id, connection._id].sort().join("_");
         let conversation = await Conversation.find({con_id: con_id}, "lastMessage");
-        connection.msg = conversation[0] ? conversation[0].lastMessage : "---";
-        console.log(connection);
+        connection.msg = conversation[0] ? conversation[0].lastMessage : "Say hii to your new Friend!";
     }
 
-    return connections;
+    return [...connections];
 }
 
 module.exports.userSignUp = async (req, res) =>{
@@ -41,7 +40,7 @@ module.exports.userSignUp = async (req, res) =>{
 
         delete user.password;
     
-        let token = jwt.sign(user.toObject(), process.env.SECRET, {expiresIn: "1h"});
+        let token = jwt.sign({user_id: user._id}, process.env.SECRET, {expiresIn: "1h"});
         return res.status(200).json({message: "SignUp Successful", token: token, user: user});
 
     }catch(err){
@@ -51,23 +50,22 @@ module.exports.userSignUp = async (req, res) =>{
 }
 
 module.exports.userSignIn = async (req, res) =>{
-    
     try{
-        const user = await User.findOne({email: req.body.email}, "_id userName email connections connectionRequests")
+        const user = await User.findOne({email: req.body.email})
         .populate("connections", "_id userName email")
         .populate("connectionRequests", "_id userName email").lean();
 
-        if (!user) {
+        if(!user) {
             return res.status(404).json("User Not Found!");
         } 
         
         const isPassword = await bcrypt.compare(req.body.password, user.password);
 
-        if (!isPassword) {
+        if(!isPassword) {
             return res.status(404).json({message: "Incorrect Password"});  
         }
 
-        user.connections = await isUsersOnline(user.connections);
+        user.connections = await isUsersOnline(req.user_id, user.connections);
 
         delete user.password;
 
@@ -84,7 +82,7 @@ module.exports.userSignIn = async (req, res) =>{
 module.exports.validateToken = async (req, res) => {
     if(req.user_id && req.token) {
         try{
-            const user = await User.findById(req.user_id, "_id userName email connections connectionRequests")
+            const user = await User.findById({_id: req.user_id}, "_id userName email connections connectionRequests")
             .populate("connections", "_id userName email")
             .populate("connectionRequests", "_id userName email").lean();
 
@@ -92,7 +90,7 @@ module.exports.validateToken = async (req, res) => {
                 return res.status(404).json("User Not Found!");
             } 
 
-            user.connections = await isUsersOnline(user.connections);
+            user.connections = await isUsersOnline(req.user_id, user.connections);
 
             return res.status(200).json({message: "SignIn Successful", token: req.token, user: user});
     

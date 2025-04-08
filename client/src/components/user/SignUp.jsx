@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import axios from "axios";
 import { useState } from "react";
-import { setConnectionRequests, setConnections, setUser } from "../../features/NoChatApp/noChatAppSlice";
+import { setConnectionRequests, setConnections, setHeaders, setUser } from "../../features/NoChatApp/noChatAppSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import io from "socket.io-client";
@@ -33,7 +33,6 @@ export default function SignUp(){
 
         onSubmit: async (values) => {
             if(formik.values.confirmPassword === formik.values.password) {
-
                 try{
                     const response = await client.post(`/signUp`, values);
 
@@ -47,6 +46,7 @@ export default function SignUp(){
                         }
 
                         dispatch(setUser(user));
+                        dispatch(setHeaders(response.data.token));
                         dispatch(setConnections(response.data.user.connections));
                         dispatch(setConnectionRequests(response.data.user.connectionRequests));
                         socket.emit("register", {_id: response.data.user._id});
