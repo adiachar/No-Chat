@@ -20,7 +20,7 @@ export default function ChatInput({connectionId, updateChat}){
     const leaveMessage = async () => {
         if(input && input != " ") {
             try {
-                let response = await axios.post(`http://localhost:5000/data/store-message`, {to_id: connectionId, message: input}, {headers});
+                let response = await axios.post(`https://nochat.onrender.com/data/store-message`, {to_id: connectionId, message: input}, {headers});
                 if(response.status === 200) {
                     setInput("");
                     updateChat();
