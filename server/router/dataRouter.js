@@ -1,20 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const {getConnections, getUsers, getConnectionRequests, storeMessage, getMessages} = require("../control/dataControl");
+const {getConnections, getAllUsers, getConnectionRequests, storeMessage, getMessages} = require("../control/dataControl");
+const { authorization } = require("../authorization");
 
 router.route("/connections")
-.get((req, res) => {
+.get(authorization, (req, res) => {
     getConnections(req, res);
 });
 
 router.route("/allUsers")
-.get((req, res) => {
-    getUsers(req, res);
-});
-
-router.route("/connectionRequests")
-.get((req, res) => {
-    getConnectionRequests(req, res);
+.get(authorization, (req, res) => {
+    getAllUsers(req, res);
 });
 
 router.route("/storeMessage")

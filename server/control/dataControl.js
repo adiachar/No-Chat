@@ -4,7 +4,7 @@ const Conversation = require("../model/conversation.js");
 const {onlineUsers} = require("../onlineUsers.js");
 
 module.exports.getConnections = async (req, res) => {
-    if(req.session.user){
+    if(req.session.user) {
         let _id = req.session.user._id;
         let data = await User.findById(_id, "connections").populate({path: "connections", select: "userName email"}).lean();
         if(data){
@@ -18,14 +18,27 @@ module.exports.getConnections = async (req, res) => {
             }
             res.json({connections});
         }
-    }else{
+
+    } else {
         console.log("no user");
     }
 }
 
-module.exports.getUsers = async (req, res) => {
-    let allUsers = await User.find({}, "_id email userName").lean();
-    res.json(allUsers);
+module.exports.getAllUsers = async (req, res) => {
+    try {
+        let currUser = await User.findById(req.user._id, "connections connectionRequests").lean();
+
+        let connectedUsers = currUser.connections || [];
+        let connectionRequests = currUser.connectionRequests || [];
+
+        let allUsers = await User.find({_id: {$ne: req.user._id, $nin: connectedUsers, $nin: connectionRequests}}, "_id userName email").lean();
+        console.log(allUsers);
+        return res.status(200).json({allUsers});  
+
+    } catch(err) {
+        console.log(err);
+        return res.status(404).json({message: "Internal Server Error!"});
+    }
 }
 
 module.exports.getConnectionRequests = async (req, res) => {
