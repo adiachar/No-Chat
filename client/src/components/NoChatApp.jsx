@@ -82,7 +82,7 @@ export default function NoChatApp(){
         <div className="NoChatApp">
             {(!noHeaderRouts.includes(location.pathname) && user._id) && <Header symbol={user.userName.toUpperCase()[0]}/>}
             <Routes>
-                <Route path="/" element={<MyConnections/>}/>
+                <Route path="/*" element={<MyConnections/>}/>
                 <Route path="/chat" element={<Chat/>} />
                 <Route path="/sign-up" element={<SignUp/>} />
                 <Route path="/sign-in" element={<SignIn/>} />
