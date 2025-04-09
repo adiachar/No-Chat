@@ -57,15 +57,17 @@ export default function NoChatApp(){
 
             } catch(err) {
                 console.log(err);
-                navigate("/sign-in")
+                navigate("/sign-in"); 
             }
         }
 
         const token = localStorage.getItem("token");
 
-        if(token && location.pathname != "/sign-in"){
-            console.log(location.pathname);
+        if(token) {
             validateToken(token);
+            
+        } else {
+            navigate('/sign-in');
         }
 
     },[]);
