@@ -1,0 +1,25 @@
+services:
+  - type: static
+    name: nochat-client
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /sign-in
+        destination: /index.html
+      - type: rewrite
+        source: /sign-up
+        destination: /index.html
+      - type: rewrite
+        source: /chat
+        destination: /index.html
+      - type: rewrite
+        source: /make-connections
+        destination: /index.html
+      - type: rewrite
+        source: /connection-requests
+        destination: /index.html
+      - type: rewrite
+        source: /*
+        destination: /index.html 
