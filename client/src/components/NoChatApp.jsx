@@ -22,6 +22,7 @@ export default function NoChatApp(){
     const location = useLocation();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
+    const isDarkMood = useSelector((state) => state.isDarkMood);
 
     useEffect(() => {
 
@@ -81,7 +82,7 @@ export default function NoChatApp(){
     const noHeaderRouts = ["/sign-in", "/sign-up", "/chat"];
 
     return(
-        <div className="NoChatApp">
+        <div className="NoChatApp" style={isDarkMood ? {backgroundColor: "black"} : {}}>
             {(!noHeaderRouts.includes(location.pathname) && user._id) && <Header symbol={user.userName.toUpperCase()[0]}/>}
             <Routes>
                 <Route path="/*" element={<MyConnections/>}/>

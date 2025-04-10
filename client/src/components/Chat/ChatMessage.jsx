@@ -9,6 +9,7 @@ export default function ChatMessage({connectionId}){
     const containerRef = useRef(null);
     const [fontSize, setFontSize] = useState(40);
     const connections = useSelector(state => state.connections);
+    const isDarkMood = useSelector(state => state.isDarkMood);
     
     useEffect(() => {
         const adjustFontSize = () => {
@@ -28,12 +29,13 @@ export default function ChatMessage({connectionId}){
     }, [connections]);
     
     return(
-        <div className={`ChatMessage`} ref={containerRef}>
+        <div className={`ChatMessage`} ref={containerRef}
+        style={isDarkMood ? {backgroundColor: "#0f0f0f", color: "white"} : {}}>
             <div className="toUser">
                 <AccountSymbl 
                 userName={connections[connectionId] ? connections[connectionId].userName : "A"} 
                 isOnline={connections[connectionId] ? connections[connectionId].isOnline : false}/>
-                <p>{connections[connectionId] ? connections[connectionId].userName : "unknown"}</p>
+                <p style={isDarkMood ? {color: "red"} : {}}>{connections[connectionId] ? connections[connectionId].userName : "unknown"}</p>
             </div>
             <div className="h1">
                 <h1 ref={headingRef}>{connections[connectionId] ? connections[connectionId].msg : "..."}</h1>

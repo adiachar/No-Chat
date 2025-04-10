@@ -1,6 +1,5 @@
 .MessageCard{
     width: 100%;
-    background-color: rgb(255, 255, 255);
     display: flex;
     padding: 1.5rem 2rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.075);
@@ -14,7 +13,7 @@
     align-items: flex-start;
     justify-content: space-between;
     & h3{
-        color: rgba(0, 0, 0, 0.793) !important;
+        color: rgba(0, 0, 0, 0.793);
     }
 }
 

@@ -19,6 +19,7 @@ export default function Chat(){
     let [messages, setMessages] = useState([]);
     let user = useSelector(state => state.user);
     let headers = useSelector(state => state.headers);
+    let isDarkMood = useSelector(state => state.isDarkMood);
 
     let con_id = [user._id, connectionId].sort().join("_");
 
@@ -54,15 +55,21 @@ export default function Chat(){
     }
 
     return(
-        <div className={ch.Chat}>
-            <div className={ch.btns}>
-                <Fab variant="extended" size="large" className={ch.chatIcon} onClick={() => showChatHistory()}>
+        <div className={ch.Chat} style={isDarkMood ? {backgroundColor: "#1a1f3c"} : {}}>
+            <div className={ch.btns} 
+            style={isDarkMood ? {backgroundColor: "rgba(255, 255, 255, 0.045)"} : {}}>
+                <Fab variant="extended" 
+                size="large" 
+                className={ch.chatIcon} 
+                onClick={() => showChatHistory()}
+                style={isDarkMood ? {backgroundColor: "#0f0f0f", color: "white"} : {}}>
                     <p>{chatHeight != "0vh" ? "Close Chat":"See Chat"}</p>
                     <ChatIcon fontSize="medium" className="icon"/>
                 </Fab>
                 <Fab size="large" 
                 className={ch.backIcon}
-                onClick={() => navigate("/")}>
+                onClick={() => navigate("/")}
+                style={isDarkMood ? {backgroundColor: "#0f0f0f", color: "white"} : {}}>
                     <CloseIcon fontSize="medium" className="icon"/>
                 </Fab>
             </div>
