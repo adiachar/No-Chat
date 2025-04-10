@@ -1,6 +1,6 @@
 .Chat{
     padding: 1rem 0rem;
-    background-color: #4e3ca8;
+    background-color: #6041f9;
 }
 
 .message{
@@ -24,8 +24,8 @@
 }
 
 .chatIcon, .backIcon{
-    background-color: white !important;
-    color: black !important;
+    background-color: white;
+    color: black;
     margin: 0.5rem !important;
 }
 

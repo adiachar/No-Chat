@@ -1,0 +1,26 @@
+.Account {
+    min-width: 22rem;
+    max-width: 100%;
+    min-height: 6rem;
+    margin: 0 auto 2rem auto;
+    padding: 1rem;
+    display: flex;
+    justify-content: flex-start;
+    background-color: rgba(0, 0, 0, 0.053);
+    border-radius: 10px;
+}
+
+.accountIcon {
+    font-size: 4rem !important;
+    color: rgba(0, 0, 0, 0.714);
+}
+
+.info {
+    padding: 0.6rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    color: rgba(0, 0, 0, 0.748);
+    overflow-x: auto;
+    font-size: 0.7rem;
+}

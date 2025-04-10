@@ -9,7 +9,8 @@ const initialState = {
     to: "",
     connections: {},
     connectionRequests: [],
-    headers: {}
+    headers: {},
+    isDarkMood: false
 }
 const noChatSlice = createSlice({
     name: "noChat",
@@ -45,6 +46,10 @@ const noChatSlice = createSlice({
 
         setConnectionRequests: (state, action) => {
             state.connectionRequests = action.payload;
+        },
+
+        setIsDarkMood: (state, payload) => {
+            state.isDarkMood = !state.isDarkMood;
         }
     }
 });
@@ -57,6 +62,7 @@ export const {
     setHeaders,
     setConnections,
     setConnectionRequests,
+    setIsDarkMood
 } = noChatSlice.actions;
 
 export default noChatSlice.reducer;

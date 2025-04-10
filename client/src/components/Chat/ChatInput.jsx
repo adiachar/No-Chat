@@ -36,7 +36,7 @@ export default function ChatInput({connectionId, updateChat}){
     }
 
     return(
-        <div className="ChatInput">
+        <div className="ChatInput" >
             <p>You:</p>
             <div className="input">
                 <InputEmoji 
