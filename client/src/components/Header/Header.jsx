@@ -7,7 +7,6 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import {useSelector} from "react-redux";
 import { useState } from "react";
 import Options from "./Options";
-import "./Header.css";
 import Account from "./Account";
 
 export default function Header({symbol}){
@@ -26,39 +25,57 @@ export default function Header({symbol}){
     }
     
     return(
-        <div className="Header">
-            <div className="header">
-                <h1 style={isDarkMood ? {color: "#ffff"}: {}}>{user.userName}</h1>
+        <div className="pt-15 px-8 flex flex-col justify-center">
+            <div className="flex justify-between mb-4 items-center">
+                <h1 className="text-4xl font-bold" style={isDarkMood ? {color: "#ffff"}: {}}>{user.userName.slice(0, 10)} {user.userName.length > 9 && "..."}</h1>
                 <Stack spacing={1} direction="row">
-                    <Fab color="" aria-label="add" className="iconBtn" style={isDarkMood ? {borderColor: "white"}: {}}
-                    onClick={() => navigate("/connection-requests")}>
-                        <NotificationsNoneIcon className="icon" style={isDarkMood ? {color: "#a99af4"} : {}}/>
+                    <Fab 
+                        color="" 
+                        aria-label="add" 
+                        style={{border: "2px solid #6041F9", borderColor: isDarkMood ? "white": "indigo", backgroundColor: "transparent", boxShadow: "none"}}
+                        onClick={() => navigate("/connection-requests")}>
+                        <NotificationsNoneIcon style={isDarkMood ? {color: "#a99af4"} : {}}/>
                     </Fab>
-                    <Fab color="" aria-label="add" className="iconBtn" style={isDarkMood ? {borderColor: "white"}: {}}>
-                        <MoreVertIcon className="icon" onClick={() => setShowOptions(!showOptions)} style={isDarkMood ? {color: "#a99af4"} : {}}/>
+                    <Fab 
+                        color="" 
+                        aria-label="add" 
+                        style={{border: "2px solid #6041F9", borderColor: isDarkMood ? "white": "indigo", backgroundColor: "transparent", boxShadow: "none"}}
+                        onClick={() => setShowOptions(!showOptions)}>
+                        <MoreVertIcon style={isDarkMood ? {color: "#a99af4"} : {}}/>
                     </Fab>
                 </Stack>
             </div>
 
             {showOptions && <Options setShowAccount={setShowAccount}/>}
-            {showAccount && <Account/>}
+            {showOptions && showAccount && <Account/>}
 
-            <div className="navigation">
-                <Stack spacing={0} direction="row" className="btns" style={isDarkMood ? {backgroundColor: "#fff2"} : {}}>
-                    <Button variant={btnSelect == "chat" ? "contained" : "text"} 
-                    onClick ={() =>{handleClick("/", "chat")}} 
-                    className={`btn btnLeft ${btnSelect == "chat" ? "selected" : ""}`}
-                    style={isDarkMood ? {color: "#fff9"}: {}}>All Chat</Button>
+            <div 
+                style={{backgroundColor: isDarkMood ? "#fff2" : ""}}
+                className="w-full bg-gray-200 rounded-full">
+                <Stack
+                    spacing={0} 
+                    direction="row"
+                    className="rounded-full">
+                    <Button 
+                        variant={btnSelect == "chat" ? "contained" : "text"} 
+                        onClick ={() =>{handleClick("/", "chat")}}
+                        size="larger"
+                        style={{width: "100%", padding: "0.7rem", boxShadow: "none", color: isDarkMood ? (btnSelect == "chat" ? "white" :"#fff9") : (btnSelect == "chat" ? "white" :"gray"), backgroundColor: btnSelect == "chat" ? "#6041F9" : "transparent", borderTopLeftRadius: "2rem", borderBottomLeftRadius: "2rem"}}
+                        >All Chat</Button>
 
-                    <Button variant={btnSelect == "connect" ? "contained" : "text"} 
-                    onClick={() => {handleClick("/make-connections", "connect")}} 
-                    className={`btn  ${btnSelect == "connect" ? "selected" : ""}`}
-                    style={isDarkMood ? {color: "#fff9"}: {}}>Connect</Button>
-
-                    <Button variant={btnSelect == "community" ? "contained" : "text"} 
-                    onClick={() => { /*community*/}} 
-                    className={`btn btnRight  ${btnSelect == "community" ? "selected" : ""}`}
-                    style={isDarkMood ? {color: "#fff9"}: {}}>Community</Button>
+                    <Button 
+                        variant={btnSelect == "connect" ? "contained" : "text"} 
+                        onClick={() => {handleClick("/make-connections", "connect")}} 
+                        size="large"
+                        style={{width: "100%", padding: "0.7rem", boxShadow: "none", color: isDarkMood ? (btnSelect == "connect" ? "white" :"#fff9") : (btnSelect == "connect" ? "white" :"gray"), backgroundColor: btnSelect == "connect" ? "#6041F9" : ""}}
+                        >Connect</Button>
+                    
+                    <Button 
+                        variant={btnSelect == "community" ? "contained" : "text"} 
+                        onClick={() => {}} 
+                        size="large"
+                        style={{width: "100%", padding: "0.7rem", boxShadow: "none", color: isDarkMood ? (btnSelect == "community" ? "white" :"#fff9") : (btnSelect == "community" ? "white" :"gray"), backgroundColor: btnSelect == "community" ? "#6041F9" : "", borderTopRightRadius: "2rem", borderBottomRightRadius: "2rem"}}
+                    >Community</Button>
                 </Stack>
             </div>
         </div>

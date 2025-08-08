@@ -6,7 +6,7 @@ import {store} from "./app/store.js";
 function App() {
   return (
     <Provider store={store}>
-      <div className="App">
+      <div className="h-full w-full">
         <NoChatApp/>
         <a href=""></a>
       </div>
