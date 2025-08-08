@@ -1,13 +1,64 @@
-*{
-    padding: 0px;
-    margin: 0px;
-    box-sizing: border-box;
+.Header{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.NoChatApp{
-    min-height: 100vh;
-    width: 100vw;
-    &::-webkit-scrollbar{
-        width: 0px;
-    }
+.Header .header{
+    height: 7rem;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 1rem;
+    color: white;
+}
+
+.Header .header .AccountSymbl{
+    background-color: white;
+    color: black;
+}
+
+.Header .header h1{
+    color: rgba(0, 0, 0, 0.514);
+    margin: 0px 0px 6px 0px;
+}
+
+.Header .btns{
+    background-color: rgba(0, 0, 0, 0.089);
+    border-radius: 2rem;
+    flex: 1;
+}
+
+.Header .btn{
+    color: rgba(78, 78, 78, 0.769);
+    border-radius: 2rem;
+    width: 100%;
+}
+
+.Header .navigation{
+    height: 3rem;
+    width: 100%;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: center;
+    justify-self: flex-start;
+}
+
+.Header .selected{
+    transition-duration: 0.5s;
+    transition-timing-function:linear;
+    background-color: #6041F9;
+    color: white !important;
+}
+
+.Header .iconBtn{
+    background-color: transparent;
+    box-shadow: none;
+    border: 2px solid black;
+}
+
+.Header .icon{
+    color: #6041F9;
 }

@@ -3,7 +3,6 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { setIsDarkMood } from '../../features/NoChatApp/noChatAppSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import op from "./Options.module.css";
 
 export default function Options({setShowAccount}) {
     const navigate = useNavigate();
@@ -17,26 +16,23 @@ export default function Options({setShowAccount}) {
     }
 
     return (
-        <ul className={op.options} style={isDarkMood ? {backgroundColor: "#fff2"} : {}}>
-            <li className={op.option}>
-                <Button variant='contained' 
-                className={op.btn} 
+        <ul className="w-full mx-auto mb-4 rounded-full bg-gray-200 flex justify-around" style={isDarkMood ? {backgroundColor: "#fff2"} : {}}>
+            <li className="flex items-center">
+                <Button variant='text' 
                 onClick={() => setShowAccount(sa => !sa)}
-                style={isDarkMood ? {color: "#fff9"} : {color: "black"}}
+                style={{padding:"0.8rem", color: isDarkMood ? "#fff9" : "gray", borderTopLeftRadius: "2rem", borderBottomLeftRadius: "2rem"}}
                 >Account</Button>
             </li>
-            <li className={op.option}>
-                <Button variant='contained' 
-                className={op.btn} 
+            <li className="">
+                <Button variant='text' 
                 onClick={() => signOut()}
-                style={isDarkMood ? {color: "#fff9"} : {color: "black"}}
+                style={{padding:"0.8rem", color: isDarkMood ? "#fff9" : "gray"}}
                 >Sign Out</Button>
             </li>
-            <li className={op.option}>
-                <Button variant='contained' 
-                className={op.btn} 
+            <li className="">
+                <Button variant='text' 
                 onClick={() =>{setMood(mood => mood === 'dark' ? 'light' : 'dark'); dispatch(setIsDarkMood())}}
-                style={isDarkMood ? {color: "#fff9"} : {color: "black"}}
+                style={{width: "100%", padding:"0.8rem", color: isDarkMood ? "#fff9" : "gray", borderTopRightRadius: "2rem", borderBottomRightRadius: "2rem"}}
                 >{mood} Mood</Button>
             </li>
         </ul>

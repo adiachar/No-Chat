@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import Chat from "./Chat/Chat.jsx";
 import Header from "./Header/Header.jsx";
 import io from "socket.io-client";
-import "./NoChatApp.css";
 import SignUp from "./user/SignUp.jsx";
 import SignIn from "./user/SignIn.jsx";
 import { useDispatch } from "react-redux";
@@ -13,6 +12,7 @@ import MyConnections from "./Connections/MyConnections.jsx";
 import MakeConnections from "./Connections/MakeConnections.jsx";
 import ConnectionRequests from "./Connections/ConnectionRequests.jsx";
 import axios from "axios";
+import "./NoChatApp.css";
 
 const socket = io(`https://nochat.onrender.com`);
 
@@ -82,7 +82,7 @@ export default function NoChatApp(){
     const noHeaderRouts = ["/sign-in", "/sign-up", "/chat"];
 
     return(
-        <div className="NoChatApp" style={isDarkMood ? {backgroundColor: "black"} : {}}>
+        <div className="h-screen w-screen" style={isDarkMood ? {backgroundColor: "black"} : {}}>
             {(!noHeaderRouts.includes(location.pathname) && user._id) && <Header symbol={user.userName.toUpperCase()[0]}/>}
             <Routes>
                 <Route path="/*" element={<MyConnections/>}/>
