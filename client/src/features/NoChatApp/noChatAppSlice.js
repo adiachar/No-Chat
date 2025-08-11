@@ -1,5 +1,4 @@
 import {createSlice} from "@reduxjs/toolkit";
-import { disconnect } from "mongoose";
 import io from "socket.io-client";
 
 const socket = io.connect(import.meta.env.VITE_WEB_SOCKET_URL);
