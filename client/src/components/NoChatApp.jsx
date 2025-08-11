@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import Chat from "./chat/Chat.jsx";
 import Header from "./header/Header.jsx";
 import io from "socket.io-client";
@@ -6,7 +6,7 @@ import SignUp from "./user/SignUp.jsx";
 import SignIn from "./user/SignIn.jsx";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {setUser, setConnectionRequests, setConnections, setHeaders, setConversations, updateMessage, setTypingMessage} from "../features/NoChatApp/noChatAppSlice.js";
+import {setUser, setConnectionRequests, setConnections, setHeaders, updateMessage, setTypingMessage} from "../features/NoChatApp/noChatAppSlice.js";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import MyConnections from "./connections/MyConnections.jsx";
 import MakeConnections from "./connections/MakeConnections.jsx";

@@ -45,8 +45,13 @@ io.on("connection", (socket) =>{
     });    
 
     //user disconnect
-    socket.on("disconnect", (user) => {
-        onlineUsers.delete(user._id);
+    socket.on("disconnect", () => {
+        for(let [user_id, socketId] of onlineUsers) {
+            if(socketId == socket.id) {
+                onlineUsers.delete(user_id);
+                break;
+            }
+        }
     });
 
     //sending messages
