@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import Chat from "./chat/Chat.jsx";
+import Chat from "./ghat/Chat.jsx";
 import Header from "./header/Header.jsx";
 import io from "socket.io-client";
 import SignUp from "./user/SignUp.jsx";
