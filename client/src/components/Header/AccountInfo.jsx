@@ -2,7 +2,7 @@ import React from 'react';
 import {useSelector} from "react-redux";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-export default function Account() {
+export default function AccountInfo() {
     const user = useSelector(state => state.user);
     const isDarkMood = useSelector(state => state.isDarkMood);
 

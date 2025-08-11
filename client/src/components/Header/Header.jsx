@@ -7,9 +7,9 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import {useSelector} from "react-redux";
 import { useState } from "react";
 import Options from "./Options";
-import Account from "./Account";
+import AccountInfo from "./AccountInfo.jsx";
 
-export default function Header({symbol}){
+export default function Header(){
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
     const isDarkMood = useSelector(state => state.isDarkMood);
@@ -25,9 +25,15 @@ export default function Header({symbol}){
     }
     
     return(
-        <div className="pt-15 px-8 flex flex-col justify-center">
+        <div className={`w-full pt-10 pb-6 px-6 z-30 flex flex-col justify-start absolute top-0 ${isDarkMood ? "bg-black" : "bg-white"}`}>
             <div className="flex justify-between mb-4 items-center">
-                <h1 className="text-4xl font-bold" style={isDarkMood ? {color: "#ffff"}: {}}>{user.userName.slice(0, 10)} {user.userName.length > 9 && "..."}</h1>
+                {user._id ? <h1 
+                    className="text-4xl font-bold" 
+                    style={isDarkMood ? {color: "#ffff"}: {}}
+                    >{user.userName.slice(0, 10)} {user.userName.length > 9 && "..."}
+                </h1> : 
+                <div className="w-1/2 p-6 bg-gray-300 rounded-2xl"></div>}
+
                 <Stack spacing={1} direction="row">
                     <Fab 
                         color="" 
@@ -45,9 +51,9 @@ export default function Header({symbol}){
                     </Fab>
                 </Stack>
             </div>
-
+            
             {showOptions && <Options setShowAccount={setShowAccount}/>}
-            {showOptions && showAccount && <Account/>}
+            {showOptions && showAccount && <AccountInfo/>}
 
             <div 
                 style={{backgroundColor: isDarkMood ? "#fff2" : ""}}

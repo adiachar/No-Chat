@@ -1,13 +1,14 @@
 import {createSlice} from "@reduxjs/toolkit";
 import io from "socket.io-client";
 
-const socket = io.connect("https://nochat.onrender.com");
+const socket = io.connect(import.meta.env.VITE_WEB_SOCKET_URL);
 
 const initialState = {
     allMessages: [],
     user: {_id: "", userName: "", email: ""},
     to: "",
     connections: {},
+    conversations: {},
     connectionRequests: [],
     headers: {},
     isDarkMood: false
@@ -27,21 +28,37 @@ const noChatSlice = createSlice({
         },
 
         sendMessage: (state, action) => {
-            let from = state.user._id;
-            let msg = action.payload.msg;
-            let to = action.payload.to;
-            socket.emit("message", {from: from, msg: msg, to: to});
+            socket.emit("message:send", action.payload);
         },
 
-        setIncommingMsg: (state, action) => {
-            let incommingMsg = action.payload;
-            state.connections[incommingMsg.from].msg = incommingMsg.msg;
+        sendTypingMessage: (state, action) => {
+            socket.emit("message:typing", action.payload);
+        },
+
+        setTypingMessage: (state, action) => {
+            let obj = action.payload;
+            let con_id = [obj.from, obj.to].sort().join("_");
+            let messages = state.conversations[con_id]?.messages;
+            state.conversations = {...state.conversations, [con_id]: {messages: messages, typingMessage: obj.message}};
         },
 
         setConnections: (state, action) => {
             for(let connection of action.payload){
                 state.connections[connection._id] = connection;
             }
+        },
+
+        setConversations: (state, action) => {
+            const {con_id, messages} = action.payload;
+            state.conversations = {...state.conversations, [con_id]: {messages: messages, typingMessage: ""}};
+        },
+
+        updateMessage: (state, action) => {
+            const {from, to} = action.payload;
+            let con_id = [to, from].sort().join("_");
+            const messages = state.conversations[con_id].messages;
+            messages.push(action.payload);
+            state.conversations = {...state.conversations, [con_id] : {messages: messages, typingMessage: ""}}
         },
 
         setConnectionRequests: (state, action) => {
@@ -57,12 +74,15 @@ const noChatSlice = createSlice({
 export const {
     sendMessage, 
     clearMessage, 
-    setIncommingMsg, 
+    setTypingMessage, 
     setUser, 
     setHeaders,
     setConnections,
     setConnectionRequests,
-    setIsDarkMood
+    setIsDarkMood,
+    setConversations,
+    updateMessage,
+    sendTypingMessage,
 } = noChatSlice.actions;
 
 export default noChatSlice.reducer;

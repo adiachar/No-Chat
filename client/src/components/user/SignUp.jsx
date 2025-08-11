@@ -17,6 +17,7 @@ export default function SignUp(){
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [status, setStatus] = useState("");
+    const [isSubmitted, setIsSubmitted] = useState(false);
     const initialValues = {
         userName: "",
         dob: "",
@@ -34,6 +35,7 @@ export default function SignUp(){
         onSubmit: async (values) => {
             if(formik.values.confirmPassword === formik.values.password) {
                 try{
+                    setIsSubmitted(true);
                     const response = await client.post(`/signUp`, values);
 
                     if(response.status === 200) {
@@ -75,22 +77,30 @@ export default function SignUp(){
         <div className="h-full w-full p-10">
             <h1 className="mt-6 text-3xl font-bold text-indigo-600">NoChat</h1>
             <p className="mt-2 text-gray-500 font-semibold">A New way of Chating</p>
-            <div className="w-72 p-6 mx-auto border-3 border-gray-400 rounded-3xl flex flex-col">
-                <h1 className="text-3xl font-bold text-gray-600">Sign up</h1>
-                <p className="mt-2 mb-2 text-gray-400 text-xs font-medium">Please fill sign up details to continue using this app</p>
-                <form onSubmit={formik.handleSubmit} className="flex flex-col">    
-                    <input className="w-full p-3 mt-4 rounded-2xl bg-gray-200" type="text" id="userName" placeholder="Name" name="userName" value={formik.values.userName} onChange={handlechange} required/>
-                    <input className="w-full p-3 mt-4 rounded-2xl bg-gray-200" type="date" id="dob" name="dob" placeholder="" value={formik.values.dob} onChange={handlechange} required/>   
-                    <input className="w-full p-3 mt-4 rounded-2xl bg-gray-200" type="email" id="email" name="email" placeholder="Email" value={formik.values.email} onChange={handlechange} required/>
-                    <input className="w-full p-3 mt-4 rounded-2xl bg-gray-200" type="password" id="password" name="password" placeholder="Password" value={formik.values.password} onChange={handlechange} required/>
-                    <input className="w-full p-3 mt-4 mb-5 rounded-2xl bg-gray-200" type="text" id="confirmPassword" name="confirmPassword" placeholder="Congirm Password" value={formik.values.confirmPassword} onChange={handlechange} required/>
-                    <Button
-                        style={{padding: "0.1rem", textTransform: "lowercase", backgroundColor: "#6041F9", borderRadius: "0.8rem", fontSize: "1.5rem", fontWeight: "700"}}
-                        variant="contained"
-                        type="submit">Sign up</Button>
-                    {status ? <p className="mt-2 text-xs font-medium text-center text-red-600">{status}</p> : null}
-                </form>
-                <p className="mt-4 text-gray-400 text-xs font-medium">Don't have an Account ? <Link to={"/sign-in"} className="text-indigo-600 underline">Click here to sign in</Link></p>
+            <div className="lg:h-10/12 md:h-10/12 lg:w-8/12 p-6 mt-6 mx-auto border-3 border-gray-400 rounded-3xl flex gap-10">
+                <div 
+                    style={{background: "linear-gradient(190deg, black 20%, blue, indigo)"}}
+                    className="w-full h-full p-6 hidden lg:flex md:flex rounded-2xl items-center justify-center">
+                        <h1 className="text-center text-white text-3xl font-bold">Welcome! Join Now to start a new way of Chating</h1>
+                </div>
+                <div className="w-90 h-full flex flex-col">
+                    <h1 className="text-3xl font-bold text-gray-600">Sign up</h1>
+                    <p className="mt-2 mb-2 text-gray-400 text-xs font-medium">Please fill sign up details to continue using this app</p>
+                    <form onSubmit={formik.handleSubmit} className="flex flex-col">    
+                        <input className="w-full p-2 mt-4 rounded-2xl bg-gray-200" type="text" id="userName" placeholder="Name" name="userName" value={formik.values.userName} onChange={handlechange} required/>
+                        <input className="w-full p-2 mt-4 rounded-2xl bg-gray-200" type="date" id="dob" name="dob" placeholder="" value={formik.values.dob} onChange={handlechange} required/>   
+                        <input className="w-full p-2 mt-4 rounded-2xl bg-gray-200" type="email" id="email" name="email" placeholder="Email" value={formik.values.email} onChange={handlechange} required/>
+                        <input className="w-full p-2 mt-4 rounded-2xl bg-gray-200" type="password" id="password" name="password" placeholder="Password" value={formik.values.password} onChange={handlechange} required/>
+                        <input className="w-full p-2 mt-4 mb-5 rounded-2xl bg-gray-200" type="text" id="confirmPassword" name="confirmPassword" placeholder="Congirm Password" value={formik.values.confirmPassword} onChange={handlechange} required/>
+                        <Button
+                            loading={isSubmitted}
+                            style={{padding: "0.1rem", textTransform: "lowercase", backgroundColor: "#6041F9", borderRadius: "0.8rem", fontSize: "1.5rem", fontWeight: "700"}}
+                            variant="contained"
+                            type="submit">Sign up</Button>
+                        {status ? <p className="mt-2 text-xs font-medium text-center text-red-600">{status}</p> : null}
+                    </form>
+                    <p className="mt-4 text-gray-400 text-xs font-medium">Don't have an Account ? <Link to={"/sign-in"} className="text-indigo-600 underline">Click here to sign in</Link></p>
+                </div>
             </div>
         </div>
     );

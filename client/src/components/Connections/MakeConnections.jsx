@@ -1,7 +1,8 @@
 import axios, { all } from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import MessageCard from "../AllMessages/MessageCard";
+import ConnectCard from "../cards/ConnectCard.jsx";
+import ChatCard from "../cards/ChatCard.jsx";
 
 export default function MakeConnections(){
     const [allUsers, setAllUsers] = useState([]);
@@ -27,7 +28,7 @@ export default function MakeConnections(){
     }, []);
 
     function requestConnection(to_id){
-        console.log("making connection");
+        console.log("making connection", to_id);
         axios.post(`https://nochat.onrender.com/connection/request-connection`, {to_id: to_id}, {headers})
         .then((res) => {
             if(res.status === 200) {
@@ -41,15 +42,15 @@ export default function MakeConnections(){
     }
 
     return (
-        <div className="MakeConnections">
-            <div className="user">
-                {allUsers.map((oUser, idx) => { 
+        <div className="max-h-9/12 w-full px-6 overflow-y-auto flex flex-col gap-6">
+            {allUsers.length > 0 ? allUsers.map((oUser, idx) => { 
                     return ( oUser.email !== user.email ? 
                     ( <div className="user" key={idx}>
-                        <MessageCard connection={oUser} btn1={requestConnection} />
+                        <ConnectCard oUser={oUser} requestConnection={requestConnection} />
                     </div> ) : null) }
-                )} 
-            </div>
+            ) :
+            Array(5).fill(null).map((_, key) => <ChatCard user={""} key={key}/>)
+            }
         </div>
     );
 }

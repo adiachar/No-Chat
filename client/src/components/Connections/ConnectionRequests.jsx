@@ -1,6 +1,6 @@
 import axios from "axios";
 import {useSelector } from "react-redux";
-import MessageCard from "../AllMessages/MessageCard";
+import RequestCard from "../cards/RequestCard";
 
 let hStyle = {width: "100%", marginTop: "2rem", textAlign: "center", color: "rgba(0, 0, 0, 0.464)"};
 
@@ -28,11 +28,13 @@ export default function ConnectionRequests(){
     }
 
     return(
-        <div className="ConnectionRequests">
+        <div className="max-h-10/12 w-full px-6 overflow-y-auto flex flex-col gap-6">
             {connectionRequests.length == 0 ? <h1 style={hStyle}>No Requests!</h1> :connectionRequests.map((request, idx) => { 
-                return ( <div className="user" key={idx}>
-                    <MessageCard connection={request} btn1={acceptRequest} btn2={rejectRequest}/>
-                </div> )}
+                return ( 
+                    <div className="user" key={idx}>
+                        <RequestCard request={request} acceptRequest={acceptRequest} rejectRequest={rejectRequest}/>
+                    </div>
+                )}
             )}
         </div>
     );

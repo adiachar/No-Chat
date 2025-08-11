@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const userRouter = require("./router/userRouter.js");
 const dataRouter = require("./router/dataRouter.js");
+const aiRouter = require("./router/aiRouter.js");
 const connectionRouter = require("./router/connectionRouter.js");
 const mongoose = require("mongoose");
 const http = require("http");
@@ -26,6 +27,7 @@ app.use(cors({
 app.use("/user", userRouter);
 app.use("/data", dataRouter);
 app.use("/connection", connectionRouter);
+app.use("/ai", aiRouter);
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -37,8 +39,10 @@ const io = new Server(server, {
 
 io.on("connection", (socket) =>{
     //user register
+    
     socket.on("register", (user) => {
         onlineUsers.set(user._id, socket.id);
+        console.log(onlineUsers);
     });    
 
     //user disconnect
@@ -47,20 +51,30 @@ io.on("connection", (socket) =>{
     });
 
     //sending messages
-    socket.on("message", (message) =>{
+    socket.on("message:typing", (message) => {
         let socketId = onlineUsers.get(message.to);
-        io.to(socketId).emit("response", message);
+        if(socketId) {
+            io.to(socketId).emit("message:typing:update", message);            
+        }
+    });
+
+    socket.on("message:send", (obj) => {
+        let socketId = onlineUsers.get(obj.to);
+        if(socketId) {
+            io.to(socketId).emit("message:new", obj);
+        }
     });
 
     //sending end connection message
     socket.on("endConnection", (connectionDtl) => {
         socket.broadcast.emit("endConnection", connectionDtl);
     });
+
 });
 
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () =>{
     console.log("Listening to PORT:", PORT);
-    main().then(() => console.log("connected to db!"));
+    main().then(() => console.log("connected to db!")).catch((err) => console.log("cannot connect to db!"));
 });

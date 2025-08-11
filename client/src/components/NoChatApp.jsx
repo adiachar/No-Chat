@@ -1,20 +1,20 @@
 import { useContext, useEffect, useState } from "react";
 import Chat from "./Chat/Chat.jsx";
-import Header from "./Header/Header.jsx";
+import Header from "./header/Header.jsx";
 import io from "socket.io-client";
 import SignUp from "./user/SignUp.jsx";
 import SignIn from "./user/SignIn.jsx";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {setIncommingMsg, setUser, setConnectionRequests, setConnections, setHeaders} from "../features/NoChatApp/noChatAppSlice.js";
+import {setUser, setConnectionRequests, setConnections, setHeaders, setConversations, updateMessage, setTypingMessage} from "../features/NoChatApp/noChatAppSlice.js";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import MyConnections from "./Connections/MyConnections.jsx";
-import MakeConnections from "./Connections/MakeConnections.jsx";
-import ConnectionRequests from "./Connections/ConnectionRequests.jsx";
+import MyConnections from "./connections/MyConnections.jsx";
+import MakeConnections from "./connections/MakeConnections.jsx";
+import ConnectionRequests from "./connections/ConnectionRequests.jsx";
 import axios from "axios";
 import "./NoChatApp.css";
 
-const socket = io(`https://nochat.onrender.com`);
+const socket = io(import.meta.env.VITE_WEB_SOCKET_URL);
 
 export default function NoChatApp(){
 
@@ -23,6 +23,7 @@ export default function NoChatApp(){
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const isDarkMood = useSelector((state) => state.isDarkMood);
+    const headers = useSelector(state => state.headers);
 
     useEffect(() => {
 
@@ -50,8 +51,7 @@ export default function NoChatApp(){
                     dispatch(setConnections(response.data.user.connections));
                     dispatch(setConnectionRequests(response.data.user.connectionRequests));
                     socket.emit("register", {_id: response.data.user._id});
-                    navigate('/');
-
+                    navigate("/");
                 } else {
                     navigate("/sign-in");
                 }
@@ -73,17 +73,33 @@ export default function NoChatApp(){
 
     },[]);
 
-    socket.on("response", (incommingMsg) => {
-        if(incommingMsg.to == user._id){
-            dispatch(setIncommingMsg(incommingMsg));
+    useEffect(() => {
+
+        const newMessage = (obj) => {
+            dispatch(updateMessage(obj));
         }
-    });
+
+        const updateTypingMessage = (obj) => {
+            dispatch(setTypingMessage(obj));
+        }
+        socket.on("message:new", newMessage);  
+        socket.on("message:typing:update", updateTypingMessage);  
+        
+        return () => {
+            socket.off("message:new", newMessage);
+            socket.off("message:typing:update", updateTypingMessage);
+        }
+    }, []);
+
+
+
+
 
     const noHeaderRouts = ["/sign-in", "/sign-up", "/chat"];
 
     return(
-        <div className="h-screen w-screen" style={isDarkMood ? {backgroundColor: "black"} : {}}>
-            {(!noHeaderRouts.includes(location.pathname) && user._id) && <Header symbol={user.userName.toUpperCase()[0]}/>}
+        <div className="h-screen w-screen relative" style={isDarkMood ? {backgroundColor: "black"} : {}}>
+            {(!noHeaderRouts.includes(location.pathname)) && <Header/>}
             <Routes>
                 <Route path="/*" element={<MyConnections/>}/>
                 <Route path="/chat" element={<Chat/>} />

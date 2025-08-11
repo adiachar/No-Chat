@@ -4,6 +4,7 @@ const conversationSchema = mongoose.Schema({
     con_id: {
         type: String,
         unique: true,
+        index: true,
     },
     participants: [
         {type: mongoose.Schema.Types.ObjectId, ref: "User"},

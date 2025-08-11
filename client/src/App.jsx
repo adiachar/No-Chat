@@ -6,9 +6,8 @@ import {store} from "./app/store.js";
 function App() {
   return (
     <Provider store={store}>
-      <div className="h-full w-full">
+      <div className="App h-screen w-screen flex">
         <NoChatApp/>
-        <a href=""></a>
       </div>
     </Provider>
   );
