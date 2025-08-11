@@ -7,10 +7,10 @@ import { Link, useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import { Button } from "@mui/material";
 
-const socket = io(`https://nochat.onrender.com`);
+const socket = io(import.meta.env.VITE_WEB_SOCKET_URL);
 
 const client = axios.create({
-    baseURL: "https://nochat.onrender.com/user"
+    baseURL: `${import.meta.env.VITE_SERVER_URL}/user`
 });
 
 export default function SignIn(){
@@ -33,7 +33,7 @@ export default function SignIn(){
             try{
                 setIsSubmitted(true);
                 const response = await client.post(`/signIn`, values);
-
+                setIsSubmitted(false);
                 if(response.status === 200) {
 
                     localStorage.setItem("token", response.data.token);
@@ -50,7 +50,7 @@ export default function SignIn(){
                 }   
 
             } catch(err) {
-                console.log(err);
+                setIsSubmitted(false); 
                 setStatus(err.response ? err.response.data.message : "Internal Server Error!");
             }
         }
@@ -67,7 +67,7 @@ export default function SignIn(){
             <p className="mt-2 text-gray-500 font-semibold">A New way of Chating</p>
             <div className="lg:h-8/12 md:h-8/12 lg:w-8/12 p-6 mt-10 mx-auto border-3 border-gray-400 rounded-3xl flex gap-10">
                 <div 
-                    style={{background: "linear-gradient(190deg, black 20%, blue, indigo)"}}
+                    style={{background: "linear-gradient(190deg, black 10%, #6041F9)"}}
                     className="w-full h-full p-6 hidden lg:flex md:flex rounded-2xl items-center justify-center">
                         <h1 className="text-center text-white text-3xl font-bold">Welcome! Join Now to start a new way of Chating</h1>
                 </div>

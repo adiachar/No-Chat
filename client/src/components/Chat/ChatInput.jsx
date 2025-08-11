@@ -60,7 +60,7 @@ export default function ChatInput({connectionId, messages, isRealtime}){
                 setInput("");
                 dispatch(sendMessage({from: user._id, to: connectionId, message: message}));
                 dispatch((updateMessage({from: user._id, to: connectionId, message: message})));
-                let response = await axios.post(`https://nochat.onrender.com/data/store-message`, {to_id: connectionId, message: message}, {headers});  
+                let response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/data/store-message`, {to_id: connectionId, message: message}, {headers});  
 
             } catch(err) {
                 console.log(err);
@@ -107,11 +107,6 @@ export default function ChatInput({connectionId, messages, isRealtime}){
                             <Button
                                 key={idx}
                                 variant="contained"
-                                // style={{
-                                //     ...btnStyle, 
-                                //     backgroundColor: obj.color,  
-                                //     transform: obj.tone == tone ? "scale(1.1)" : "none"
-                                // }}
                                 sx={{
                                     ...btnStyle,
                                     backgroundColor: obj.color,

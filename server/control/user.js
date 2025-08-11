@@ -7,12 +7,9 @@ const {onlineUsers} = require("../onlineUsers.js");
 
 dotenv.config();
 
-const isUsersOnline = async (user_id, connections) => {
+const isUsersOnline = async (connections) => {
     for(let connection of connections){
         connection.isOnline = onlineUsers.has(connection._id.toString());
-        let con_id = [user_id, connection._id].sort().join("_");
-        let conversation = await Conversation.find({con_id: con_id}, "lastMessage");
-        connection.msg = conversation[0] ? conversation[0].lastMessage : "Say hii to your new Friend!";
     }
 
     return [...connections];
@@ -65,7 +62,7 @@ module.exports.userSignIn = async (req, res) =>{
             return res.status(404).json({message: "Incorrect Password"});  
         }
 
-        user.connections = await isUsersOnline(req.user_id, user.connections);
+        user.connections = await isUsersOnline(user.connections);
 
         delete user.password;
 
@@ -90,7 +87,7 @@ module.exports.validateToken = async (req, res) => {
                 return res.status(404).json("User Not Found!");
             } 
 
-            user.connections = await isUsersOnline(req.user_id, user.connections);
+            user.connections = await isUsersOnline(user.connections);
 
             return res.status(200).json({message: "SignIn Successful", token: req.token, user: user});
     

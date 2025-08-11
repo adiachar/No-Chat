@@ -13,7 +13,7 @@ export default function RequestCard({request, acceptRequest, rejectRequest}){
     
     return(
         <div className="w-full pb-2 flex items-center border-b-2 border-gray-300">
-            <AccountSymbl userName={request.userName} isOnline={request.isOnline}/>
+            <AccountSymbl userName={request.userName} isOnline={false}/>
             <div className="w-6/12 p-0 overflow-x-auto">
                 {request ?
                     <div className="w-full flex flex-col">

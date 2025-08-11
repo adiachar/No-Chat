@@ -42,7 +42,6 @@ io.on("connection", (socket) =>{
     
     socket.on("register", (user) => {
         onlineUsers.set(user._id, socket.id);
-        console.log(onlineUsers);
     });    
 
     //user disconnect
@@ -72,7 +71,7 @@ io.on("connection", (socket) =>{
 
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 server.listen(PORT, () =>{
     console.log("Listening to PORT:", PORT);

@@ -10,7 +10,7 @@ export default function ConnectionRequests(){
     const connectionRequests = useSelector((state) => state.connectionRequests);
 
     function acceptRequest(to_id){
-        axios.post(`https://nochat.onrender.com/connection/accept`, {to_id: to_id}, {headers})
+        axios.post(`${import.meta.env.VITE_SERVER_URL}/connection/accept`, {to_id: to_id}, {headers})
         .then((res) => {
             console.log(res.data.message);
         }).catch((err) => {
@@ -19,7 +19,7 @@ export default function ConnectionRequests(){
     }
 
     function rejectRequest(to_id){
-        axios.post(`https://nochat.onrender.com/connection/reject`, {to_id: to_id}, {headers})
+        axios.post(`${import.meta.env.VITE_SERVER_URL}/connection/reject`, {to_id: to_id}, {headers})
         .then((res) => {
             console.log(res.data.message);
         }).catch((err) => {
@@ -28,8 +28,9 @@ export default function ConnectionRequests(){
     }
 
     return(
-        <div className="max-h-10/12 w-full px-6 overflow-y-auto flex flex-col gap-6">
-            {connectionRequests.length == 0 ? <h1 style={hStyle}>No Requests!</h1> :connectionRequests.map((request, idx) => { 
+        <div className="h-12/12 pt-50 px-6 w-full overflow-y-auto flex flex-col gap-6">
+            {connectionRequests.length == 0 ? <h1 className="w-full text-center font-bold text-3xl text-gray-500">No Requests!</h1> :
+            connectionRequests.map((request, idx) => { 
                 return ( 
                     <div className="user" key={idx}>
                         <RequestCard request={request} acceptRequest={acceptRequest} rejectRequest={rejectRequest}/>

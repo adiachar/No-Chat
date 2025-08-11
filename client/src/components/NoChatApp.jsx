@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import Chat from "./Chat/Chat.jsx";
+import Chat from "./chat/Chat.jsx";
 import Header from "./header/Header.jsx";
 import io from "socket.io-client";
 import SignUp from "./user/SignUp.jsx";
@@ -12,7 +12,6 @@ import MyConnections from "./connections/MyConnections.jsx";
 import MakeConnections from "./connections/MakeConnections.jsx";
 import ConnectionRequests from "./connections/ConnectionRequests.jsx";
 import axios from "axios";
-import "./NoChatApp.css";
 
 const socket = io(import.meta.env.VITE_WEB_SOCKET_URL);
 
@@ -34,7 +33,7 @@ export default function NoChatApp(){
             }
 
             try{
-                const response = await axios.get(`https://nochat.onrender.com/user/validateToken`, {headers});
+                const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user/validateToken`, {headers});
 
                 if(response.status === 200) {
 

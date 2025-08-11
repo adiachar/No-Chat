@@ -13,7 +13,6 @@ module.exports.generateMessage = async (req, res) => {
     const content = `Recent messages: \n${previousMessages} \n\nRequesting user: ${currUserName} \n\nTone: ${tone} \n\nIntent: ${request}`
 
     try {
-        console.log("generating");
         const generatedMessage =  await getAiGeneratedMessage(content, "llama-3.3-70b-versatile");
 
         res.status(200).json({message: generatedMessage});

@@ -7,10 +7,10 @@ import { useDispatch } from "react-redux";
 import io from "socket.io-client";
 import { Button } from "@mui/material";
 
-const socket = io(`https://nochat.onrender.com`);
+const socket = io(import.meta.env.VITE_WEB_SOCKET_URL);
 
 const client = axios.create({
-    baseURL: "https://nochat.onrender.com/user"
+    baseURL: `${import.meta.env.VITE_SERVER_URL}/user`
 });
 
 export default function SignUp(){
@@ -37,7 +37,7 @@ export default function SignUp(){
                 try{
                     setIsSubmitted(true);
                     const response = await client.post(`/signUp`, values);
-
+                    setIsSubmitted(false);
                     if(response.status === 200) {
                         localStorage.setItem("token", response.data.token);
                         
@@ -55,6 +55,7 @@ export default function SignUp(){
                         navigate('/');
 
                     } else {
+                        setIsSubmitted(false);
                         setStatus(response.data.message);
                     }
                 } catch(err) {

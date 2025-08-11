@@ -14,7 +14,7 @@ export default function MakeConnections(){
         let token = localStorage.getItem("token");
 
         if(token) {
-            let response = await axios.get(`https://nochat.onrender.com/data/allUsers`, {headers});
+            let response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/data/allUsers`, {headers});
             
             if(response.status === 200 ) {
                 setAllUsers(response.data.allUsers);
@@ -29,7 +29,7 @@ export default function MakeConnections(){
 
     function requestConnection(to_id){
         console.log("making connection", to_id);
-        axios.post(`https://nochat.onrender.com/connection/request-connection`, {to_id: to_id}, {headers})
+        axios.post(`${import.meta.env.VITE_SERVER_URL}/connection/request-connection`, {to_id: to_id}, {headers})
         .then((res) => {
             if(res.status === 200) {
                 console.log("Request Sent!");
@@ -42,7 +42,7 @@ export default function MakeConnections(){
     }
 
     return (
-        <div className="max-h-9/12 w-full px-6 overflow-y-auto flex flex-col gap-6">
+        <div className="h-12/12 pt-50 px-6 w-full overflow-y-auto flex flex-col gap-6">
             {allUsers.length > 0 ? allUsers.map((oUser, idx) => { 
                     return ( oUser.email !== user.email ? 
                     ( <div className="user" key={idx}>
