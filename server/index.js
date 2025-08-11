@@ -75,5 +75,5 @@ const PORT = process.env.PORT || 8080;
 
 server.listen(PORT, () =>{
     console.log("Listening to PORT:", PORT);
-    main().then(() => console.log("connected to db!")).catch((err) => console.log("cannot connect to db!"));
+    main().then(() => console.log("connected to db!")).catch((err) => console.log(err));
 });
